@@ -16,6 +16,7 @@ gem 'compass'
 gem 'bootstrap-sass'
 gem 'activesupport'
 gem 'i18n'
+gem 'zip-zip'
 
 group :development, :test do
   gem 'foreman'

@@ -9,11 +9,19 @@ class RubyVirtApp < Sinatra::Application
 
   helpers do
     include Sinatra::Cookies
-    include Sprockets::Helpers
     include RubyVirt::Helpers
   end
 
   get '/' do
     erb :index
+  end
+
+  post '/' do
+    vagrant = RubyVirt::Vagrant.new(params[:vagrant])
+    vagrant.zip!
+    send_file vagrant.path,
+      type: 'application/octet-stream',
+      disposition: 'attachment',
+      filename: 'vagrant.zip'
   end
 end
