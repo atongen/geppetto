@@ -1,23 +1,17 @@
+# unicorn config
 app_path = File.expand_path('../..', __FILE__)
-
-# Set unicorn options
-worker_processes ENV['UNICORN_COUNT'] || 1
+working_directory app_path
+worker_processes (ENV['UNICORN_COUNT'] || 1).to_i
+pid "#{app_path}/tmp/pids/unicorn.#{ENV['RACK_ENV']}.pid"
 timeout 180
 
-if ENV['RACK_ENV'] == 'production'
+unless %w{ development test }.include?(ENV['RACK_ENV'])
   preload_app true
-  user 'ruby_virt', 'ruby_virt'
-  # Log everything to one file
-  stderr_path "#{app_path}/log/unicorn.log"
-  stdout_path "#{app_path}/log/unicorn.log"
-  listen "#{app_path}/tmp/sockets/unicorn.sock"
+  user "ruby_virt_#{ENV['RACK_ENV']}", "ruby_virt_#{ENV['RACK_ENV']}"
+  stderr_path "#{app_path}/log/unicorn.#{ENV['RACK_ENV']}.log"
+  stdout_path "#{app_path}/log/unicorn.#{ENV['RACK_ENV']}.log"
+  listen "#{app_path}/tmp/sockets/unicorn.#{ENV['RACK_ENV']}.sock"
 end
-
-# Fill path to your app
-working_directory app_path
-
-# Set master PID location
-pid "#{app_path}/tmp/pids/unicorn.pid"
 
 before_fork do |server, worker|
   old_pid = "#{server.config[:pid]}.oldbin"

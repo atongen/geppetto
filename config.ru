@@ -1,4 +1,3 @@
-ENV['RACK_ENV'] ||= 'development'
 require File.expand_path('../ruby_virt_app', __FILE__)
 
 use Rack::Session::Cookie, key: 'ruby_virt.session',

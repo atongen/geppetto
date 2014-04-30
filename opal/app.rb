@@ -1,3 +1,4 @@
 Document.ready? do
-  alert 'Hello world!'
+  # writes to console
+  puts 'Hello world!'
 end

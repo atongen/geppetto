@@ -1,10 +1,14 @@
-Bundler.require
+require File.expand_path('../config/environment', __FILE__)
 
-$:.unshift(File.expand_path('../lib', __FILE__))
-require 'ruby_virt'
+require 'sinatra/cookies'
+require 'sinatra/reloader'
 
 class RubyVirtApp < Sinatra::Application
+  configure :development do
+    register Sinatra::Reloader
+  end
   set :assets_precompile, %w{ application.css *.png *.jpg *.svg *.eot *.ttf *.woff }
+  set :views, File.expand_path("../views", __FILE__)
   register Sinatra::AssetPipeline
 
   helpers do
@@ -17,11 +21,13 @@ class RubyVirtApp < Sinatra::Application
   end
 
   post '/' do
-    vagrant = RubyVirt::Vagrant.new(params[:vagrant])
-    vagrant.zip!
-    send_file vagrant.path,
-      type: 'application/octet-stream',
-      disposition: 'attachment',
-      filename: 'vagrant.zip'
+    @builder = RubyVirt::Builder.new(params[:virt])
+    if @builder.valid?
+      attachment(@builder.name + '.zip')
+      content_type('application/octet-stream')
+      @builder.zip_data
+    else
+      erb :index
+    end
   end
 end
