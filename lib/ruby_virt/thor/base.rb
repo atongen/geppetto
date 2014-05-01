@@ -7,8 +7,8 @@ module RubyVirt
         base.send :include, ::Thor::Actions
 
         # Set task arguments
-        base.send :argument, :zip_path, optional: true
-        base.send :argument, :auto, optional: true
+        base.send :argument, :zip_path, optional: :true
+        base.send :class_option, :name, type: :string, required: :true
 
         base.send :extend, ClassMethods
       end
@@ -38,7 +38,6 @@ module RubyVirt
               ensure
                 FileUtils.remove_entry_secure(self.destination_root)
               end
-              puts file.path unless auto
               file.path
             end
           end

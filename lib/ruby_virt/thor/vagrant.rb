@@ -1,6 +1,10 @@
 class Vagrant < Thor::Group
   include RubyVirt::Thor::Base
 
+  class_option :provider, type: :string, required: :true
+  class_option :box_url, type: :string, required: true
+  class_option :ami, type: :string, required: false
+
   group_tasks do
 
     def create_vagrantfile_file

@@ -5,16 +5,39 @@ module RubyVirt
     include ::ActiveModel::Validations
 
     attr_accessor :params
+    PARAM_KEYS = %w{
+      name
+      format
+      provider
+      box_url
+    }
 
     validates :format,
       inclusion: %w{ vagrant docker }
+    validates :name,
+      format: /\A\w+\Z/
+
+    # Vagrant validations
+    validates :provider,
+      inclusion: %w{ virtualbox aws },
+      if: ->{ format == "vagrant" }
+
+    # virutalbox validations
+    validates :box_url,
+      presence: true,
+      if: -> { provider == "virtualbox" }
+
+    # aws validations
+    validates :ami,
+      presence: true,
+      if: -> { provider == "aws" }
 
     def initialize(params = {})
       @params = params
     end
 
     def zip_data
-      script = thor_class.new(*[thor_args, thor_opts, thor_config])
+      script = thor_script
       # Thor::Group#invoke_all returns array of return values
       # for each task executed
       zip_path = script.invoke_all.last
@@ -26,12 +49,15 @@ module RubyVirt
       zip_data
     end
 
-    def name
-      @name ||= "#{Time.now.strftime('%Y%m%d%H%M%S')}-#{format}"
+    # Instantiates the Thor::Group for these params
+    def thor_script
+      thor_class.new(*[thor_args, thor_opts, thor_config])
     end
 
-    def format
-      params[:format]
+    PARAM_KEYS.each do |key|
+      class_eval <<-EOF
+        def #{key}; params[:#{key}]; end
+      EOF
     end
 
     private
@@ -39,9 +65,9 @@ module RubyVirt
     def thor_class
       case format
       when 'vagrant'
-        Vagrant
+        ::Vagrant
       when 'docker'
-        Docker
+        ::Docker
       end
     end
 
@@ -50,7 +76,11 @@ module RubyVirt
     end
 
     def thor_opts
-      { auto: true }
+      PARAMS_KEYS.select { |k| k != "format" }.inject({}) do |mem,k|
+         val = send(k)
+         mem[k.to_sym] = val if val.present?
+         mem
+      end
     end
 
     def thor_config
