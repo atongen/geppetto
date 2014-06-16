@@ -128,6 +128,5 @@ DEPENDENCIES
   sinatra-support
   sprockets
   sprockets-helpers
-  thor
   uglifier
   unicorn
