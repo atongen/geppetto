@@ -1,7 +1,7 @@
 require 'zip'
 require 'tempfile'
 
-module RubyVirt
+module Geppetto
   module Zipper
 
     def self.zip_file(directory, path = nil)
@@ -11,7 +11,7 @@ module RubyVirt
       if path
         file = File.open(path, 'w')
       else
-        file = Tempfile.new('ruby_virt_zip')
+        file = Tempfile.new('geppetto_zip')
       end
 
       begin

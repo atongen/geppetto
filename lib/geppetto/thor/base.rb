@@ -1,4 +1,4 @@
-module RubyVirt
+module Geppettoo
   module Thor
     module Base
 
@@ -15,7 +15,7 @@ module RubyVirt
 
       module ClassMethods
         def source_root
-          RubyVirtRoot.join("templates/#{self.name.underscore}")
+          GeppettoRoot.join("templates/#{self.name.underscore}")
         end
 
         # We need to inject a first (init) and last (zip) task into
@@ -27,14 +27,14 @@ module RubyVirt
         def group_tasks
           self.class_eval do
             def init
-              self.destination_root = Dir.mktmpdir("ruby_virt_dir")
+              self.destination_root = Dir.mktmpdir("geppettoo_dir")
             end
 
             yield
 
             def zip
               begin
-                file = RubyVirt::Zipper.zip_file(self.destination_root, zip_path)
+                file = Geppetto::Zipper.zip_file(self.destination_root, zip_path)
               ensure
                 FileUtils.remove_entry_secure(self.destination_root)
               end

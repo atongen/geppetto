@@ -1,6 +1,6 @@
 require 'active_model'
 
-module RubyVirt
+module Geppetto
   class Builder
     include ::ActiveModel::Validations
 

@@ -1,4 +1,4 @@
-module RubyVirt
+module Geppetto
   module Helpers
 
     def base_url

@@ -1,5 +1,5 @@
 class Docker < Thor::Group
-  include RubyVirt::Thor::Base
+  include Geppetto::Thor::Base
 
   def create_readme_file
     template('README.md.erb', 'README.md')

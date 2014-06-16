@@ -4,7 +4,7 @@ Bundler.require
 
 require 'pathname'
 
-RubyVirtRoot = Pathname.new(File.expand_path('../..', __FILE__))
+GeppettoRoot = Pathname.new(File.expand_path('../..', __FILE__))
 
-$:.unshift(RubyVirtRoot.join('lib'))
-require 'ruby_virt'
+$:.unshift(GeppettoRoot.join('lib'))
+require 'geppetto'

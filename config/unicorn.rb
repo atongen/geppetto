@@ -7,7 +7,7 @@ timeout 180
 
 unless %w{ development test }.include?(ENV['RACK_ENV'])
   preload_app true
-  user "ruby_virt_#{ENV['RACK_ENV']}", "ruby_virt_#{ENV['RACK_ENV']}"
+  user "geppetto_#{ENV['RACK_ENV']}", "geppetto_#{ENV['RACK_ENV']}"
   stderr_path "#{app_path}/log/unicorn.#{ENV['RACK_ENV']}.log"
   stdout_path "#{app_path}/log/unicorn.#{ENV['RACK_ENV']}.log"
   listen "#{app_path}/tmp/sockets/unicorn.#{ENV['RACK_ENV']}.sock"

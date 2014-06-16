@@ -3,7 +3,7 @@ require File.expand_path('../config/environment', __FILE__)
 require 'sinatra/cookies'
 require 'sinatra/reloader'
 
-class RubyVirtApp < Sinatra::Application
+class GeppettoApp < Sinatra::Application
   configure :development do
     register Sinatra::Reloader
   end
@@ -13,7 +13,7 @@ class RubyVirtApp < Sinatra::Application
 
   helpers do
     include Sinatra::Cookies
-    include RubyVirt::Helpers
+    include Geppetto::Helpers
   end
 
   get '/' do
@@ -21,7 +21,7 @@ class RubyVirtApp < Sinatra::Application
   end
 
   post '/' do
-    @builder = RubyVirt::Builder.new(params[:virt])
+    @builder = Geppetto::Builder.new(params[:virt])
     if @builder.valid?
       attachment(@builder.name + '.zip')
       content_type('application/octet-stream')

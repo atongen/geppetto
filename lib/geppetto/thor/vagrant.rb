@@ -1,5 +1,5 @@
 class Vagrant < Thor::Group
-  include RubyVirt::Thor::Base
+  include Geppetto::Thor::Base
 
   class_option :provider, type: :string, required: :true
   class_option :box_url, type: :string, required: true
