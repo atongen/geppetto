@@ -1,0 +1,62 @@
+class cakes::packages {
+
+  package { 'build-essential':
+    ensure => installed
+  }
+
+  # Nokogiri dependencies
+  package { ['libxml2', 'libxml2-dev', 'libxslt1-dev']:
+    ensure => installed
+  }
+
+  # ImageScience dependencies
+  package { 'libfreeimage-dev':
+    ensure => installed
+  }
+
+  # rmagick & paperclip dependencies
+  package { [ 'imagemagick', 'libmagickwand-dev' ]:
+    ensure => installed
+  }
+
+  package { 'nodejs':
+    ensure => installed
+  }
+
+  package { 'vim':
+    ensure => present
+  }
+
+  package { 'vim-nox':
+    ensure => present
+  }
+
+  package { 'fortune-mod':
+    ensure => present
+  }
+
+  package { 'fortunes':
+    ensure => present
+  }
+
+  package { 'fortunes-min':
+    ensure => present
+  }
+
+  package { 'cowsay':
+    ensure => present
+  }
+
+  package { 'tmux':
+    ensure => present
+  }
+
+  package { 'ntp':
+    ensure => present
+  }
+
+  package { 'redis-server':
+    ensure => present
+  }
+
+}

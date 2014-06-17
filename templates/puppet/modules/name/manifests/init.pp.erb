@@ -1,0 +1,90 @@
+class { "cakes::packages": require => Stage["main"] }
+class { "cakes::install_postgresql": require => Class["cakes::packages"] }
+class { "cakes::install_ruby": require => Class["cakes::install_postgres"] }
+class { "cakes::install_app": require => Class["cakes::install_ruby"] }
+class { "cakes::install_nginx": require => Class["cakes::install_app"] }
+
+class cakes {
+  Exec {
+    path => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin']
+  }
+
+  group { 'puppet':
+    ensure => present,
+  }
+
+  group { 'vagrant':
+    ensure => present
+  }
+
+  user { 'vagrant':
+    ensure => present,
+    home => '/home/vagrant',
+    gid => 'vagrant',
+    shell => '/bin/bash',
+    require => Group['vagrant']
+  }
+
+  file { '/home/vagrant':
+    ensure => directory,
+    owner => 'vagrant',
+    group => 'vagrant',
+    mode => 0750,
+    require => User['vagrant']
+  }
+
+  group { 'cakes':
+    ensure => present
+  }
+
+  user { 'cakes':
+    ensure => present,
+    home => '/home/cakes',
+    gid => 'cakes',
+    shell => '/bin/bash',
+    require => Group['cakes']
+  }
+
+  file { '/home/cakes':
+    ensure => directory,
+    owner => 'cakes',
+    group => 'cakes',
+    mode => 0750,
+    require => User['cakes']
+  }
+
+  group { 'nerdery':
+    ensure => present
+  }
+
+  user { 'nerdery':
+    ensure => present,
+    home => '/home/nerdery',
+    gid => 'nerdery',
+    shell => '/bin/bash',
+    groups => ['sudo'],
+    require => Group['nerdery']
+  }
+
+  file { '/home/nerdery':
+    ensure => directory,
+    owner => 'nerdery',
+    group => 'nerdery',
+    mode => 0750,
+    require => User['nerdery']
+  }
+
+  exec { 'update-locale':
+    command => 'update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8',
+  }
+
+  class { 'timezone':
+    timezone => 'America/Chicago',
+  }
+
+  include packages
+  include install_postgresql
+  include install_ruby
+  include install_app
+  include install_nginx
+}

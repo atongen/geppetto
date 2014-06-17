@@ -1,0 +1,68 @@
+class cakes::install_app {
+
+  file { '/home/vagrant/bin':
+    ensure => directory
+  }
+
+  file { '/home/vagrant/bin/setup_native.sh':
+    ensure => present,
+    mode => 775,
+    source => '/vagrant/puppet/modules/cakes/files/setup_native.sh',
+    replace => true,
+    require => File['/home/vagrant/bin']
+  }
+
+  file { '/home/vagrant/.vimrc':
+    ensure => present,
+    source => '/vagrant/puppet/modules/cakes/files/vimrc',
+    replace => true,
+    require => File['/home/vagrant/bin']
+  }
+
+  $vim_dirs = [
+    '/home/vagrant/.vim',
+    '/home/vagrant/.vim/_temp',
+    '/home/vagrant/.vim/_backup'
+  ]
+
+  file { $vim_dirs:
+    ensure => directory
+  }
+
+
+  file { '/home/vagrant/cakes':
+    ensure => symlink,
+    target => '/vagrant'
+  }
+
+  file { '/vagrant/config/database.yml':
+    ensure => present,
+    source => '/vagrant/config/database.yml.skel',
+    replace => false
+  }
+
+  file { '/vagrant/config/newrelic.yml':
+    ensure => present,
+    source => '/vagrant/config/newrelic.yml.skel',
+    replace => false
+  }
+
+  file { '/vagrant/config/app_config.yml':
+    ensure => present,
+    source => '/vagrant/config/app_config.yml.skel',
+    replace => false
+  }
+
+  file { '/home/vagrant/README.md':
+    ensure => present,
+    source => '/vagrant/puppet/modules/cakes/files/README.md',
+    replace => true
+  }
+
+  file { '/home/vagrant/.bashrc':
+    ensure => present,
+    source => '/vagrant/puppet/modules/cakes/files/bashrc',
+    replace => true
+  }
+
+}

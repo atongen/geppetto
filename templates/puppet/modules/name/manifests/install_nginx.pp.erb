@@ -1,0 +1,72 @@
+class cakes::install_nginx {
+
+  class { 'nginx':
+    package_source  => 'passenger',
+    http_cfg_append => {
+      'passenger_root' => '/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini',
+    }
+  }
+
+  # required for nginx/passenger
+  package { 'nginx-extras':
+    ensure => installed
+  }
+
+  # The nginx vhost will put the root directive inside of a location directive.
+  # This needs to be manually fixed before passenger will work correctly.
+  # https://github.com/jfryman/puppet-nginx/issues/142
+  nginx::resource::vhost { 'www.cakes.com':
+    server_name => ['_'],
+    www_root => '/var/www/www.cakes.com/current/public',
+    vhost_cfg_append => {
+      'passenger_enabled' => 'on',
+      'passenger_ruby'    => '/opt/rubies/ruby-1.9.3-p545/bin/ruby',
+    },
+    require => Package['nginx-extras']
+  }
+
+  $cap_dirs = [
+    "/var",
+    "/var/www",
+    "/var/www/www.cakes.com",
+    "/var/www/www.cakes.com/releases",
+    "/var/www/www.cakes.com/shared",
+    "/var/www/www.cakes.com/shared/config",
+    "/var/www/www.cakes.com/shared/log",
+    "/var/www/www.cakes.com/shared/pids",
+    "/var/www/www.cakes.com/shared/storage",
+    "/var/www/www.cakes.com/shared/bak",
+    "/var/www/www.cakes.com/shared/system",
+    "/var/www/www.cakes.com/shared/xml",
+    "/var/www/www.cakes.com/shared/tmp",
+    "/var/www/www.cakes.com/shared/tmp/sessions",
+    "/var/www/www.cakes.com/shared/tmp/sockets",
+    "/var/www/www.cakes.com/shared/tmp/assets"
+  ]
+
+  file { $cap_dirs:
+    ensure => directory,
+    owner => 'vagrant'
+  }
+
+  file { '/var/www/www.cakes.com/shared/config/database.yml':
+    ensure => present,
+    source => '/vagrant/config/database.yml.skel',
+    replace => false,
+    require => File[$cap_dirs]
+  }
+
+  file { '/var/www/www.cakes.com/shared/config/newrelic.yml':
+    ensure => present,
+    source => '/vagrant/config/newrelic.yml.skel',
+    replace => false,
+    require => File[$cap_dirs]
+  }
+
+  file { '/var/www/www.cakes.com/shared/config/app_config.yml':
+    ensure => present,
+    source => '/vagrant/config/app_config.yml.skel',
+    replace => false,
+    require => File[$cap_dirs]
+  }
+}

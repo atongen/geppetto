@@ -1,0 +1,32 @@
+development:
+  adapter: <%= database %>
+  encoding: unicode
+  database: <%= name %>_dev
+  username: vagrant
+  password: abcd1234
+  pool: 5
+
+assets:
+  adapter: <%= database %>
+  encoding: unicode
+  database: <%= name %>_dev
+  username: vagrant
+  password: abcd1234
+  pool: 5
+
+test:
+  adapter: <%= database %>
+  encoding: unicode
+  database: <%= name %>_test
+  username: vagrant
+  password: abcd1234
+  pool: 5
+  min_messages: WARNING
+
+production:
+  adapter: <%= database %>
+  encoding: unicode
+  database: <%= name %>_prod
+  username: vagrant
+  password: abcd1234
+  pool: 5

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd
+git clone https://git.nerderylabs.com/DECOPAC.cakes cakes_native
+cd cakes_native
+git checkout qa
+cp config/database.yml{.dist,}
+cp config/newrelic.yml{.dist,}
+cp config/app_config.yml{.dist,}
+
+bundle install
+bundle exec rake db:schema:load
+bundle exec rake db:seed
+
+echo 'run forman start'
