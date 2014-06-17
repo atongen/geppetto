@@ -1,4 +1,4 @@
-class cakes::install_app {
+class <%= name %>::install_app {
 
   file { '/home/vagrant/bin':
     ensure => directory
@@ -7,14 +7,14 @@ class cakes::install_app {
   file { '/home/vagrant/bin/setup_native.sh':
     ensure => present,
     mode => 775,
-    source => '/vagrant/puppet/modules/cakes/files/setup_native.sh',
+    source => '/vagrant/puppet/modules/<%= name %>/files/setup_native.sh',
     replace => true,
     require => File['/home/vagrant/bin']
   }
 
   file { '/home/vagrant/.vimrc':
     ensure => present,
-    source => '/vagrant/puppet/modules/cakes/files/vimrc',
+    source => '/vagrant/puppet/modules/<%= name %>/files/vimrc',
     replace => true,
     require => File['/home/vagrant/bin']
   }
@@ -29,8 +29,7 @@ class cakes::install_app {
     ensure => directory
   }
 
-
-  file { '/home/vagrant/cakes':
+  file { '/home/vagrant/<%= name %>':
     ensure => symlink,
     target => '/vagrant'
   }
@@ -47,22 +46,21 @@ class cakes::install_app {
     replace => false
   }
 
-  file { '/vagrant/config/app_config.yml':
+  file { '/vagrant/config/application.yml':
     ensure => present,
-    source => '/vagrant/config/app_config.yml.skel',
+    source => '/vagrant/config/application.yml.skel',
     replace => false
   }
 
   file { '/home/vagrant/README.md':
     ensure => present,
-    source => '/vagrant/puppet/modules/cakes/files/README.md',
+    source => '/vagrant/puppet/modules/<%= name %>/files/README.md',
     replace => true
   }
 
   file { '/home/vagrant/.bashrc':
     ensure => present,
-    source => '/vagrant/puppet/modules/cakes/files/bashrc',
+    source => '/vagrant/puppet/modules/<%= name %>/files/bashrc',
     replace => true
   }
-
 }

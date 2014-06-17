@@ -1,10 +1,10 @@
-class { "cakes::packages": require => Stage["main"] }
-class { "cakes::install_postgresql": require => Class["cakes::packages"] }
-class { "cakes::install_ruby": require => Class["cakes::install_postgres"] }
-class { "cakes::install_app": require => Class["cakes::install_ruby"] }
-class { "cakes::install_nginx": require => Class["cakes::install_app"] }
+class { "<%= name %>::packages": require => Stage["main"] }
+class { "<%= name %>::install_postgresql": require => Class["<%= name %>::packages"] }
+class { "<%= name %>::install_ruby": require => Class["<%= name %>::install_postgres"] }
+class { "<%= name %>::install_app": require => Class["<%= name %>::install_ruby"] }
+class { "<%= name %>::install_nginx": require => Class["<%= name %>::install_app"] }
 
-class cakes {
+class <%= name %> {
   Exec {
     path => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin']
   }
@@ -33,24 +33,24 @@ class cakes {
     require => User['vagrant']
   }
 
-  group { 'cakes':
+  group { '<%= name %>':
     ensure => present
   }
 
-  user { 'cakes':
+  user { '<%= name %>':
     ensure => present,
-    home => '/home/cakes',
-    gid => 'cakes',
+    home => '/home/<%= name %>',
+    gid => '<%= name %>',
     shell => '/bin/bash',
-    require => Group['cakes']
+    require => Group['<%= name %>']
   }
 
-  file { '/home/cakes':
+  file { '/home/<%= name %>':
     ensure => directory,
-    owner => 'cakes',
-    group => 'cakes',
+    owner => '<%= name %>',
+    group => '<%= name %>',
     mode => 0750,
-    require => User['cakes']
+    require => User['<%= name %>']
   }
 
   group { 'nerdery':

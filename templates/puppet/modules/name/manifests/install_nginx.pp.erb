@@ -1,4 +1,4 @@
-class cakes::install_nginx {
+class <%= name %>::install_nginx {
 
   class { 'nginx':
     package_source  => 'passenger',
@@ -15,12 +15,12 @@ class cakes::install_nginx {
   # The nginx vhost will put the root directive inside of a location directive.
   # This needs to be manually fixed before passenger will work correctly.
   # https://github.com/jfryman/puppet-nginx/issues/142
-  nginx::resource::vhost { 'www.cakes.com':
+  nginx::resource::vhost { '<%= name %>':
     server_name => ['_'],
-    www_root => '/var/www/www.cakes.com/current/public',
+    www_root => '/var/www/<%= name %>/current/public',
     vhost_cfg_append => {
       'passenger_enabled' => 'on',
-      'passenger_ruby'    => '/opt/rubies/ruby-1.9.3-p545/bin/ruby',
+      'passenger_ruby'    => '/opt/rubies/<%= ruby_type %>-<%= ruby_version %>/bin/ruby',
     },
     require => Package['nginx-extras']
   }
@@ -28,20 +28,17 @@ class cakes::install_nginx {
   $cap_dirs = [
     "/var",
     "/var/www",
-    "/var/www/www.cakes.com",
-    "/var/www/www.cakes.com/releases",
-    "/var/www/www.cakes.com/shared",
-    "/var/www/www.cakes.com/shared/config",
-    "/var/www/www.cakes.com/shared/log",
-    "/var/www/www.cakes.com/shared/pids",
-    "/var/www/www.cakes.com/shared/storage",
-    "/var/www/www.cakes.com/shared/bak",
-    "/var/www/www.cakes.com/shared/system",
-    "/var/www/www.cakes.com/shared/xml",
-    "/var/www/www.cakes.com/shared/tmp",
-    "/var/www/www.cakes.com/shared/tmp/sessions",
-    "/var/www/www.cakes.com/shared/tmp/sockets",
-    "/var/www/www.cakes.com/shared/tmp/assets"
+    "/var/www/<%= name %>.com",
+    "/var/www/<%= name %>.com/releases",
+    "/var/www/<%= name %>.com/shared",
+    "/var/www/<%= name %>.com/shared/config",
+    "/var/www/<%= name %>.com/shared/log",
+    "/var/www/<%= name %>.com/shared/pids",
+    "/var/www/<%= name %>.com/shared/system",
+    "/var/www/<%= name %>.com/shared/tmp",
+    "/var/www/<%= name %>.com/shared/tmp/sessions",
+    "/var/www/<%= name %>.com/shared/tmp/sockets",
+    "/var/www/<%= name %>.com/shared/tmp/assets"
   ]
 
   file { $cap_dirs:
@@ -49,23 +46,23 @@ class cakes::install_nginx {
     owner => 'vagrant'
   }
 
-  file { '/var/www/www.cakes.com/shared/config/database.yml':
+  file { '/var/www/<%= name %>/shared/config/database.yml':
     ensure => present,
     source => '/vagrant/config/database.yml.skel',
     replace => false,
     require => File[$cap_dirs]
   }
 
-  file { '/var/www/www.cakes.com/shared/config/newrelic.yml':
+  file { '/var/www/<%= name %>/shared/config/newrelic.yml':
     ensure => present,
     source => '/vagrant/config/newrelic.yml.skel',
     replace => false,
     require => File[$cap_dirs]
   }
 
-  file { '/var/www/www.cakes.com/shared/config/app_config.yml':
+  file { '/var/www/<%= name %>/shared/config/application.yml':
     ensure => present,
-    source => '/vagrant/config/app_config.yml.skel',
+    source => '/vagrant/config/application.yml.dist',
     replace => false,
     require => File[$cap_dirs]
   }

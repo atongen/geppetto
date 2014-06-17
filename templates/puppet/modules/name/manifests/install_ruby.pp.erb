@@ -1,8 +1,8 @@
-class cakes::install_ruby {
+class <%= name %>::install_ruby {
 
-  # cakes::install_nginx depends on this ruby/version combination
+  # <%= name %>::install_nginx depends on this ruby/version combination
   $ruby_type = "ruby"
-  $ruby_version = "1.9.3-p545"
+  $ruby_version = "<%= ruby_version %>"
 
   file { '/home/vagrant/src':
     ensure => 'directory'
@@ -42,7 +42,7 @@ class cakes::install_ruby {
 
   file { '/etc/profile.d/chruby.sh':
     ensure => present,
-    source => '/vagrant/puppet/modules/cakes/files/chruby.sh',
+    source => '/vagrant/puppet/modules/<%= name %>/files/chruby.sh',
     require => Exec['install_chruby']
   }
 

@@ -1,4 +1,4 @@
-class cakes::packages {
+class <%= name %>::packages {
 
   package { 'build-essential':
     ensure => installed
@@ -23,27 +23,7 @@ class cakes::packages {
     ensure => installed
   }
 
-  package { 'vim':
-    ensure => present
-  }
-
-  package { 'vim-nox':
-    ensure => present
-  }
-
-  package { 'fortune-mod':
-    ensure => present
-  }
-
-  package { 'fortunes':
-    ensure => present
-  }
-
-  package { 'fortunes-min':
-    ensure => present
-  }
-
-  package { 'cowsay':
+  package { 'vim', 'vim-nox':
     ensure => present
   }
 

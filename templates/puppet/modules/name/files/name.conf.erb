@@ -3,11 +3,11 @@ server {
 
   server_name           _;
 
-  access_log            /var/log/nginx/www.cakes.com.access.log;
-  error_log             /var/log/nginx/www.cakes.com.error.log;
+  access_log            /var/log/nginx/<%= name %>.access.log;
+  error_log             /var/log/nginx/<%= name %>.error.log;
 
-  root  /var/www/www.cakes.com/current/public;
+  root  /var/www/<%= name %>/current/public;
 
   passenger_enabled on;
-  passenger_ruby /opt/rubies/ruby-1.9.3-p545/bin/ruby;
+  passenger_ruby /opt/rubies/<%= ruby_type %>-<%= ruby_version %>/bin/ruby;
 }

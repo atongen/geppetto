@@ -1,12 +1,13 @@
 #!/bin/bash
 
 cd
-git clone https://git.nerderylabs.com/DECOPAC.cakes cakes_native
-cd cakes_native
+# Update this
+git clone https://git.nerderylabs.com/<%= name %> <%= name %>_native
+cd <%= name %>_native
 git checkout qa
 cp config/database.yml{.dist,}
 cp config/newrelic.yml{.dist,}
-cp config/app_config.yml{.dist,}
+cp config/application.yml{.dist,}
 
 bundle install
 bundle exec rake db:schema:load

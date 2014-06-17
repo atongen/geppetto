@@ -1,5 +1,5 @@
-class cakes::install_postgresql {
-  $pg_databases = ['cakes_dev', 'cakes_test', 'cakes_prod']
+class <%= name %>::install_postgresql {
+  $pg_databases = ['<%= name %>_dev', '<%= name %>_test', '<%= name %>_prod']
 
   class { 'postgresql::server': }
   class { 'postgresql::server::contrib': }

@@ -1,5 +1,17 @@
 <h1 class="page-header">Geppetto</h1>
 
+<% if @error %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Error!
+      </h3>
+    </div>
+    <div class="panel-body">
+      <%= @error %>
+    </div>
+  </div>
+<% end %>
 <% if @builder && @builder.errors.any? %>
   <div class="panel panel-danger">
     <div class="panel-heading">
@@ -20,23 +32,51 @@
 <form role="form" class="form-horizontal" action="/" method="post">
   <h3>Name</h3>
   <div class="form-group">
-    <input type="text" name="virt[name]" class="form-control" placeholder="Name">
+    <input type="text" name="virt[name]" class="form-control" placeholder="Name" value="<%= @builder.name %>">
     Singular, snake-case
   </div>
-  <h3>Format</h3>
+
+  <h3>Database</h3>
   <div class="form-group">
     <div class="radio">
       <label>
-        <input type="radio" name="virt[format]" id="virt-format-vagrant" value="vagrant" checked>
-        Vagrant
+        <input type="radio" name="virt[database]" id="virt-database-postgresql" value="postgresql" <%= "checked" if @builder.database == "postgresql" %>>
+        Postgresql
+      </label>
+    </div>
+  </div>
+
+  <h3>Ruby Type</h3>
+  <div class="form-group">
+    <div class="radio">
+      <label>
+        <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-ruby" value="ruby" <%= "checked" if @builder.ruby_type == "ruby" %>>
+        Ruby (MRI)
+      </label>
+    </div>
+  </div>
+
+  <h3>Ruby Version</h3>
+  <div class="form-group">
+    <div class="radio">
+      <label>
+        <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-2-1-2" value="2.1.2" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
+        2.1.2
       </label>
     </div>
     <div class="radio">
       <label>
-        <input type="radio" name="virt[format]" id="virt-format-docker" value="docker" disabled>
-        Docker
+        <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-9-3" value="1-9-3" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
+        1.9.3
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-8-7" value="1-8-7" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
+        1.8.7
       </label>
     </div>
   </div>
+
   <button type="submit" class="btn btn-default">Submit</button>
 </form>

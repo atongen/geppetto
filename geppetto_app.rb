@@ -21,6 +21,7 @@ class GeppettoApp < Sinatra::Application
   end
 
   get '/' do
+    @builder = Geppetto::Builder.new
     erb :index
   end
 
@@ -30,10 +31,6 @@ class GeppettoApp < Sinatra::Application
       begin
         @builder.build!
         zip_data = @builder.zip_data
-      rescue => e
-        flash[:alert] = "There was an error: #{e}"
-        erb :index
-      else
         attachment(@builder.name + '.zip')
         content_type('application/octet-stream')
         zip_data
