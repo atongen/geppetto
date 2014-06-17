@@ -4,6 +4,9 @@ require 'tempfile'
 module Geppetto
   module Zipper
 
+    # Generate a zip file
+    # directory: the directory to be zipped
+    # path: path to outfile, will be tempfile if nil
     def self.zip_file(directory, path = nil)
       return false unless File.directory?(directory)
 

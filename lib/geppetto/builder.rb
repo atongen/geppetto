@@ -4,87 +4,74 @@ module Geppetto
   class Builder
     include ::ActiveModel::Validations
 
-    attr_accessor :params
-    PARAM_KEYS = %w{
-      name
-      format
-      provider
-      box_url
-    }
+    attr_accessor :params,
+                  :zip_dir,
+                  :zip_file
 
-    validates :format,
-      inclusion: %w{ vagrant docker }
     validates :name,
       format: /\A\w+\Z/
 
-    # Vagrant validations
-    validates :provider,
-      inclusion: %w{ virtualbox aws },
-      if: ->{ format == "vagrant" }
-
-    # virutalbox validations
-    validates :box_url,
-      presence: true,
-      if: -> { provider == "virtualbox" }
-
-    # aws validations
-    validates :ami,
-      presence: true,
-      if: -> { provider == "aws" }
-
     def initialize(params = {})
       @params = params
+      @built = false
+    end
+
+    def build!
+      @zip_dir = Dir.mktmpdir("geppettoo_dir")
+      do_build
+      @zip_file = Zipper.zip_file(@zip_dir).path
+      @built = true
+    end
+
+    def cleanup
+      if File.file?(zip_file)
+        FileUtils.remove_entry_secure(zip_file)
+      end
+      if File.directory?(zip_dir)
+        FileUtils.remove_entry_secure(zip_dir)
+      end
+      true
+    end
+
+    def built?
+      !!@built
+    end
+
+    def name
+      params[:name]
     end
 
     def zip_data
-      script = thor_script
-      # Thor::Group#invoke_all returns array of return values
-      # for each task executed
-      zip_path = script.invoke_all.last
-      begin
-        zip_data = File.read(zip_path)
-      ensure
-        File.unlink(zip_path)
+      if built?
+        File.read(zip_file)
       end
-      zip_data
-    end
-
-    # Instantiates the Thor::Group for these params
-    def thor_script
-      thor_class.new(*[thor_args, thor_opts, thor_config])
-    end
-
-    PARAM_KEYS.each do |key|
-      class_eval <<-EOF
-        def #{key}; params[:#{key}]; end
-      EOF
     end
 
     private
 
-    def thor_class
-      case format
-      when 'vagrant'
-        ::Vagrant
-      when 'docker'
-        ::Docker
-      end
+    def do_build
+      add_sym_template("README.md")
     end
 
-    def thor_args
-      [nil]
+    def template_path(template_name)
+      GeppettoRoot.join("templates/#{template_name}.erb")
     end
 
-    def thor_opts
-      PARAMS_KEYS.select { |k| k != "format" }.inject({}) do |mem,k|
-         val = send(k)
-         mem[k.to_sym] = val if val.present?
-         mem
-      end
+    def destination_path(destination_name)
+      File.join(zip_dir, destination_name)
     end
 
-    def thor_config
-      {}
+    def add_template(template_name, destination_name)
+      b = binding
+      template = File.read(template_path(template_name))
+      rendered = ERB.new(template).result(b)
+      File.open(destination_path(destination_name), 'w') { |f| f.puts rendered }
     end
+
+    # Convenience method for adding a template with a symetric destination name
+    def add_sym_template(template_name)
+      add_template(template_name, template_name)
+    end
+
   end
 end

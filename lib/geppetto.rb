@@ -8,7 +8,3 @@ require 'geppetto/helpers'
 require 'geppetto/bootstrap_sass'
 require 'geppetto/zipper'
 require 'geppetto/builder'
-
-require 'geppetto/thor/base'
-require 'geppetto/thor/vagrant'
-require 'geppetto/thor/docker'

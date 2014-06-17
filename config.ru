@@ -1,8 +1,5 @@
-require File.expand_path('../geppetto_app', __FILE__)
-
-use Rack::Session::Cookie, key: 'geppetto.session',
-  expire_after: 31536000, # one year
-  secret: ENV['SESSION_SECRET']
+require File.expand_path('../config/environment', __FILE__)
+require GeppettoRoot.join('geppetto_app')
 
 apps = []
 
