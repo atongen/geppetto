@@ -1,36 +1,25 @@
 require 'zip'
-require 'tempfile'
 
 module Geppetto
-  module Zipper
+  class Zipper
 
-    # Generate a zip file
-    # directory: the directory to be zipped
-    # path: path to outfile, will be tempfile if nil
-    def self.zip_file(directory, path = nil)
-      return false unless File.directory?(directory)
+    def initialize
+      @zip = ::Zip::OutputStream.new(::StringIO.new(''), true)
+    end
 
-      directory = File.expand_path(directory)
-      if path
-        file = File.open(path, 'w')
-      else
-        file = Tempfile.new('geppetto_zip')
-      end
+    def to_s
+      @zip.close_buffer.string
+    end
 
-      begin
-        # http://thinkingeek.com/2013/11/15/create-temporary-zip-file-send-response-rails/
-        Zip::OutputStream.open(file.path) { |zipfile| }
+    def add_file(path, content)
+      @zip.put_next_entry(path)
+      @zip.write(content)
+    end
 
-        Zip::File.open(file.path, Zip::File::CREATE) do |z|
-          Dir[File.join(directory, '**', '**')].each do |f|
-            z.add(f.sub(directory+'/', ''), f)
-          end
-        end
-      ensure
-        file.close
-      end
-
-      file
+    def add_directory(path)
+      p = path.dup
+      p << '/' unless p[-1,1] == '/'
+      @zip.put_next_entry(p)
     end
 
   end

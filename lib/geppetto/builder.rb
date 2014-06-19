@@ -1,5 +1,4 @@
 require 'active_model'
-require 'fileutils'
 
 module Geppetto
   class Builder
@@ -21,24 +20,12 @@ module Geppetto
 
     def initialize(params = {})
       @params = params
+      @zip = Zipper.new
       @built = false
     end
 
     def build!
-      @zip_dir = Dir.mktmpdir("geppettoo_dir")
       do_build
-      @zip_file = Zipper.zip_file(@zip_dir).path
-      @built = true
-    end
-
-    def cleanup
-      if zip_file && File.file?(zip_file)
-        FileUtils.remove_entry_secure(zip_file)
-      end
-      if zip_dir && File.directory?(zip_dir)
-        FileUtils.remove_entry_secure(zip_dir)
-      end
-      true
     end
 
     def built?
@@ -46,9 +33,7 @@ module Geppetto
     end
 
     def zip_data
-      if built?
-        File.read(zip_file)
-      end
+      @zip.to_s if built?
     end
 
     PARAMS.each do |param|
@@ -62,6 +47,9 @@ module Geppetto
     private
 
     def do_build
+      return if built?
+      @built = true
+
       # All symetric files
       %w{ Vagrantfile
           puppet/Puppetfile
@@ -92,33 +80,30 @@ module Geppetto
       # Special named files
       add_template("puppet/modules/name/files/name.conf", "puppet/modules/#{name}/#{name}.conf")
 
-      mkdestination_dir('puppet/run')
+      # Directories
+      %w{ puppet/run }.each do |dir|
+        add_directory(dir)
+      end
     end
 
     def template_path(template_name)
       GeppettoRoot.join("templates/#{template_name}.erb")
     end
 
-    def destination_path(destination_name)
-      File.join(zip_dir, destination_name)
-    end
-
-    def mkdestination_dir(destination_dir)
-      FileUtils.mkdir(File.join(zip_dir, destination_dir))
-    end
-
     def add_template(template_name, destination_name)
       b = binding
       template = File.read(template_path(template_name))
       rendered = ERB.new(template).result(b)
-      dir = File.dirname(File.join(zip_dir, destination_name))
-      FileUtils.mkdir_p(dir) unless File.directory?(dir)
-      File.open(destination_path(destination_name), 'w') { |f| f.puts rendered }
+      @zip.add_file(destination_name, rendered)
     end
 
     # Convenience method for adding a template with a symetric destination name
     def add_sym_template(template_name)
       add_template(template_name, template_name)
+    end
+
+    def add_directory(dir)
+      @zip.add_directory(dir)
     end
 
   end

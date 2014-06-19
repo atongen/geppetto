@@ -8,6 +8,7 @@ class GeppettoApp < Sinatra::Application
   end
   set :assets_precompile, %w{ application.css *.png *.jpg *.svg *.eot *.ttf *.woff }
   set :views, File.expand_path("../views", __FILE__)
+  set :public_dir, File.expand_path("../public", __FILE__)
   register Sinatra::AssetPipeline
 
   set :sessions, key: 'geppetto.session',
@@ -28,15 +29,10 @@ class GeppettoApp < Sinatra::Application
   post '/' do
     @builder = Geppetto::Builder.new(params[:virt])
     if @builder.valid?
-      begin
-        @builder.build!
-        zip_data = @builder.zip_data
-        attachment(@builder.name + '.zip')
-        content_type('application/octet-stream')
-        zip_data
-      ensure
-        @builder.cleanup
-      end
+      @builder.build!
+      attachment(@builder.name + '.zip')
+      content_type('application/octet-stream')
+      @builder.zip_data
     else
       erb :index
     end
