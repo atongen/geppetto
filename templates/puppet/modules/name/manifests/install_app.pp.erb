@@ -1,8 +1,5 @@
 class <%= name %>::install_app {
 
-  file { '/home/vagrant/bin':
-    ensure => directory
-  }
 
   file { '/home/vagrant/bin/setup_native.sh':
     ensure => present,
@@ -12,22 +9,6 @@ class <%= name %>::install_app {
     require => File['/home/vagrant/bin']
   }
 
-  file { '/home/vagrant/.vimrc':
-    ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/vimrc',
-    replace => true,
-    require => File['/home/vagrant/bin']
-  }
-
-  $vim_dirs = [
-    '/home/vagrant/.vim',
-    '/home/vagrant/.vim/_temp',
-    '/home/vagrant/.vim/_backup'
-  ]
-
-  file { $vim_dirs:
-    ensure => directory
-  }
 
   file { '/home/vagrant/<%= name %>':
     ensure => symlink,
@@ -37,18 +18,6 @@ class <%= name %>::install_app {
   file { '/vagrant/config/database.yml':
     ensure => present,
     source => '/vagrant/config/database.yml.skel',
-    replace => false
-  }
-
-  file { '/vagrant/config/newrelic.yml':
-    ensure => present,
-    source => '/vagrant/config/newrelic.yml.skel',
-    replace => false
-  }
-
-  file { '/vagrant/config/application.yml':
-    ensure => present,
-    source => '/vagrant/config/application.yml.skel',
     replace => false
   }
 

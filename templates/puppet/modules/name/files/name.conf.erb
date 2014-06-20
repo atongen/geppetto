@@ -8,6 +8,8 @@ server {
 
   root  /var/www/<%= name %>/current/public;
 
+  <% if ruby_type && ruby_version %>
   passenger_enabled on;
   passenger_ruby /opt/rubies/<%= ruby_type %>-<%= ruby_version %>/bin/ruby;
+  <% end %>
 }

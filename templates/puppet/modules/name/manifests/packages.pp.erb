@@ -4,6 +4,11 @@ class <%= name %>::packages {
     ensure => installed
   }
 
+  package { 'ntp':
+    ensure => present
+  }
+
+  <% if ruby_type && ruby_version %>
   # Nokogiri dependencies
   package { ['libxml2', 'libxml2-dev', 'libxslt1-dev']:
     ensure => installed
@@ -19,24 +24,47 @@ class <%= name %>::packages {
     ensure => installed
   }
 
+  # capabara-webkit
+  package { ['libqtwebkit-dev', 'qt4-qmake']:
+    ensure => present
+  }
+  <% end %>
+
+  <% if (ruby_type && ruby_version) || nodejs %>
   package { 'nodejs':
     ensure => installed
   }
+  <% end %>
 
+  <% if vim %>
   package { 'vim', 'vim-nox':
     ensure => present
   }
+  <% end %>
 
+  <% if tmux %>
   package { 'tmux':
     ensure => present
   }
+  <% end %>
 
-  package { 'ntp':
+  <% if wkhtmltopdf %>
+  # pdf generation
+  package { [ 'wkhtmltopdf', 'xorg', 'xvfb' ]:
     ensure => present
   }
+  <% end %>
 
+  <% if redis %>
   package { 'redis-server':
     ensure => present
   }
+  <% end %>
+
+  <% if memcached %>
+  package { 'memcached':
+    ensure => present
+  }
+  <% end %>
 
 }

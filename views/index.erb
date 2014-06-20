@@ -36,45 +36,146 @@
     Singular, snake-case
   </div>
 
-  <h3>Database</h3>
-  <div class="form-group">
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[database]" id="virt-database-postgresql" value="postgresql" <%= "checked" if @builder.database == "postgresql" %>>
-        Postgresql
-      </label>
+  <div class="database-type-options">
+    <h3>Database</h3>
+    <div class="form-group">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-postgresql" value="postgresql" <%= "checked" if @builder.database_type == "postgresql" %>>
+          Postgresql
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-mysql" value="postgres" <%= "checked" if @builder.database_type == "mysql" %>>
+          Mysql
+        </label>
+      </div>
     </div>
   </div>
 
-  <h3>Ruby Type</h3>
-  <div class="form-group">
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-ruby" value="ruby" <%= "checked" if @builder.ruby_type == "ruby" %>>
-        Ruby (MRI)
-      </label>
+  <div class="ruby-type-options">
+    <h3>Ruby</h3>
+    <div class="form-group">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-ruby" value="ruby" <%= "checked" if @builder.ruby_type == "ruby" %>>
+          Ruby (MRI)
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-jruby" value="jruby" <%= "checked" if @builder.ruby_type == "jruby" %>>
+          JRuby
+        </label>
+      </div>
     </div>
   </div>
 
-  <h3>Ruby Version</h3>
-  <div class="form-group">
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-2-1-2" value="2.1.2" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
-        2.1.2
-      </label>
+  <div class="ruby-version-options">
+    <h3>Ruby Version</h3>
+    <div class="form-group">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-2-1-2" value="2.1.2" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
+          2.1.2
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-9-3" value="1-9-3" <%= "checked" if @builder.ruby_version == "1.9.3" %>>
+          1.9.3
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-8-7" value="1-8-7" <%= "checked" if @builder.ruby_version == "1.8.7" %>>
+          1.8.7
+        </label>
+      </div>
     </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-9-3" value="1-9-3" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
-        1.9.3
-      </label>
+  </div>
+
+  <div class="jruby-version-options">
+    <h3>JRuby Version</h3>
+    <div class="form-group">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[jruby_version]" id="virt-jruby-version-1.7.12" value="2.1.2" <%= "checked" if @builder.jruby_version == "1.7.12" %>>
+          1.7.12
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[jruby_version]" id="virt-jruby-version-1.6.8" value="1.6.8" <%= "checked" if @builder.jruby_version == "1.6.8" %>>
+          1.6.8
+        </label>
+      </div>
     </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-8-7" value="1-8-7" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
-        1.8.7
-      </label>
+  </div>
+
+  <div class="java-type-options">
+    <h3>Java</h3>
+    <div class="form-group">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_type]" id="virt-java-type-oracle" value="oracle" <%= "checked" if @builder.java_type == "oracle" %>>
+          Oracle
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_type]" id="virt-java-type-openjdk" value="openjdk" <%= "checked" if @builder.java_type == "openjdk" %>>
+          OpenJDK
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="java-version-options">
+    <h3>Java Version</h3>
+    <div class="form-group">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_version]" id="virt-java-version-8" value="8" <%= "checked" if @builder.java_version == "8" %>>
+          8
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_version]" id="virt-java-version-7" value="7" <%= "checked" if @builder.java_version == "7" %>>
+          7
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_version]" id="virt-java-version-6" value="6" <%= "checked" if @builder.java_version == "6" %>>
+          6
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="extras-options">
+    <h3>Extras</h3>
+    <div class="form-group">
+      <% { aws:         'Amazon Web Services',
+           ruby_app:    'Ruby App',
+           nginx:       'Nginx',
+           wkhtmltopdf: 'wkhtmltopdf',
+           tmux:        'tmux',
+           vim:         'Vim',
+           redis:       'Redis',
+           memcached:   'memcached',
+           nodejs:      'NodeJS'
+      }.each do |name,title| %>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="virt[<%= name %>]" id="virt-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
+        </label>
+      </div>
+      <% end %>
     </div>
   </div>
 

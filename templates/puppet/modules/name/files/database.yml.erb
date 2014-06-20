@@ -1,5 +1,5 @@
 development:
-  adapter: <%= database %>
+  adapter: <%= database_type %>
   encoding: unicode
   database: <%= name %>_dev
   username: vagrant
@@ -7,7 +7,7 @@ development:
   pool: 5
 
 assets:
-  adapter: <%= database %>
+  adapter: <%= database_type %>
   encoding: unicode
   database: <%= name %>_dev
   username: vagrant
@@ -15,7 +15,7 @@ assets:
   pool: 5
 
 test:
-  adapter: <%= database %>
+  adapter: <%= database_type %>
   encoding: unicode
   database: <%= name %>_test
   username: vagrant
@@ -24,7 +24,7 @@ test:
   min_messages: WARNING
 
 production:
-  adapter: <%= database %>
+  adapter: <%= database_type %>
   encoding: unicode
   database: <%= name %>_prod
   username: vagrant

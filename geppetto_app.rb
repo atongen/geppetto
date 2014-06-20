@@ -29,7 +29,6 @@ class GeppettoApp < Sinatra::Application
   post '/' do
     @builder = Geppetto::Builder.new(params[:virt])
     if @builder.valid?
-      @builder.build!
       attachment(@builder.name + '.zip')
       content_type('application/octet-stream')
       @builder.zip_data

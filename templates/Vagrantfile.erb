@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+<% if aws %>
 env_file = File.expand_path('../puppet/.env.vagrant', __FILE__)
 if File.file?(env_file)
   File.readlines(env_file).each do |line|
@@ -12,6 +13,7 @@ if File.file?(env_file)
     end
   end
 end
+<% end %>
 
 VAGRANTFILE_API_VERSION = "2"
 
@@ -29,6 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.ssh.forward_agent = true
   end
 
+  <% if aws %>
   # aws provider
   config.vm.provider :aws do |aws, override|
     aws.access_key_id = ENV.fetch('AWS_ACCESS_KEY', 'default_access_key')
@@ -36,25 +39,30 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     aws.keypair_name = ENV.fetch('AWS_KEYPAIR_NAME', 'default_keypair_name')
 
     # https://cloud-images.ubuntu.com/locator/ec2/
-    # Ubuntu us-east-1 trusty 14.04 LTS amd64 ebs 20140416.1
-    aws.ami = "ami-018c9568"
+    aws.ami = ENV.fetch('AWS_EC2_AMI', 'ami-018c9568')
     aws.tags = {
       Name: ENV.fetch("AWS_EC2_NAME", "<%= name %>")
     }
-    aws.security_groups = ["Web Servers"]
-    aws.instance_type = "m1.large"
-    aws.region = "us-east-1"
+    aws.security_groups = [ENV.fetch('AWS_SECURITY_GROUP', "Web Servers")]
+    aws.instance_type = ENV.fetch('AWS_EC2_SIZE', "m1.large")
+    aws.region = ENV.fetch('AWS_REGION', "us-east-1")
 
     config.vm.box = "dummy"
     config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
     override.vm.hostname = ENV.fetch("AWS_EC2_NAME", "<%= name %>")
     override.vm.synced_folder '.', '/vagrant', rsync_excludes: %w{
-      log tmp puppet/.env.vagrant .git
-      public/system public/assets }
+      log
+      tmp
+      puppet/.env.vagrant
+      .git
+      public/system
+      public/assets
+    }
     override.ssh.username = "ubuntu"
     override.ssh.private_key_path = ENV.fetch('AWS_PRIVATE_KEY_PATH', '/path/to/default/private/key.pem')
   end
+  <% end %>
 
   # Setup librarian-puppet
   # uses default puppet module path of /etc/puppet
