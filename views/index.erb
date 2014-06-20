@@ -29,11 +29,11 @@
   </div>
 <% end %>
 
-<form role="form" class="form-horizontal" action="/" method="post">
+<form role="form" action="/" method="post">
   <h3>Name</h3>
   <div class="form-group">
     <input type="text" name="virt[name]" class="form-control" placeholder="my-amazing-project" value="<%= @builder.name %>">
-    Singular, snake-case
+    <p class="help-block">Singular, snake-case</p>
   </div>
 
   <div class="database-type-options">
