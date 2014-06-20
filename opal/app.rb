@@ -8,8 +8,8 @@ class MyForm
 
   def initialize
     update
-    ruby_type.on(:click) { update }
-    jruby_type.on(:click) { update }
+
+    update_fields.on(:click) { update }
   end
 
   def update
@@ -18,10 +18,19 @@ class MyForm
     else
       ruby_versions.hide
     end
+
     if jruby_type.checked?
       jruby_versions.show
     else
       jruby_versions.hide
+    end
+
+
+    if java_type != ""
+      java_versions.show
+    else
+
+      java_versions.hide
     end
   end
 
@@ -33,6 +42,18 @@ class MyForm
     @jruby_type ||= Element.find('#virt-ruby-type-jruby')
   end
 
+  def java_type
+    java_fields.filter(':checked').value
+  end
+
+  def java_fields
+    @java_fields ||= Element.find('input[name=virt\[java_type\]]')
+  end
+
+  def java_versions
+    @java_versions ||= Element.find('.java-version-options')
+  end
+
   def ruby_versions
     @ruby_versions ||= Element.find('.ruby-version-options')
   end
@@ -41,6 +62,9 @@ class MyForm
     @jruby_versions ||= Element.find('.jruby-version-options')
   end
 
+  def update_fields
+    @update_fields ||= Element.find('.selection-parent input:radio')
+  end
 end
 
 Document.ready? do

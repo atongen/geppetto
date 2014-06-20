@@ -38,8 +38,14 @@
 
   <div class="database-type-options">
     <h3>Database</h3>
-    <div class="form-group">
+    <div class="form-group selection-parent">
       <div class="radio">
+        <label>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-none" value="" <%= "checked" if @builder.database_type.blank? %>>
+          None
+        </label>
+
+        <div class="radio">
         <label>
           <input type="radio" name="virt[database_type]" id="virt-database-type-postgresql" value="postgresql" <%= "checked" if @builder.database_type == "postgresql" %>>
           Postgresql
@@ -57,7 +63,13 @@
 
   <div class="ruby-type-options">
     <h3>Ruby</h3>
-    <div class="form-group">
+    <div class="form-group selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-none" value="" <%= "checked" if @builder.ruby_type.blank? %>>
+          None
+        </label>
+      </div>
       <div class="radio">
         <label>
           <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-ruby" value="ruby" <%= "checked" if @builder.ruby_type == "ruby" %>>
@@ -117,7 +129,13 @@
 
   <div class="java-type-options">
     <h3>Java</h3>
-    <div class="form-group">
+    <div class="form-group selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_type]" id="virt-java-type-none" value="" <%= 'checked' if @builder.java_type.blank? %>/>
+          None
+        </label>
+      </div>
       <div class="radio">
         <label>
           <input type="radio" name="virt[java_type]" id="virt-java-type-oracle" value="oracle" <%= "checked" if @builder.java_type == "oracle" %>>
