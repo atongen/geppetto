@@ -1,6 +1,5 @@
 class <%= name %>::install_app {
 
-
   file { '/home/vagrant/bin/setup_native.sh':
     ensure => present,
     mode => 775,
@@ -17,7 +16,7 @@ class <%= name %>::install_app {
 
   file { '/vagrant/config/database.yml':
     ensure => present,
-    source => '/vagrant/config/database.yml.skel',
+    source => '/vagrant/config/database.yml.dist',
     replace => false
   }
 

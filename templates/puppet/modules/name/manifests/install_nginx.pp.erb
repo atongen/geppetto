@@ -28,17 +28,17 @@ class <%= name %>::install_nginx {
   $cap_dirs = [
     "/var",
     "/var/www",
-    "/var/www/<%= name %>.com",
-    "/var/www/<%= name %>.com/releases",
-    "/var/www/<%= name %>.com/shared",
-    "/var/www/<%= name %>.com/shared/config",
-    "/var/www/<%= name %>.com/shared/log",
-    "/var/www/<%= name %>.com/shared/pids",
-    "/var/www/<%= name %>.com/shared/system",
-    "/var/www/<%= name %>.com/shared/tmp",
-    "/var/www/<%= name %>.com/shared/tmp/sessions",
-    "/var/www/<%= name %>.com/shared/tmp/sockets",
-    "/var/www/<%= name %>.com/shared/tmp/assets"
+    "/var/www/<%= name %>",
+    "/var/www/<%= name %>/releases",
+    "/var/www/<%= name %>/shared",
+    "/var/www/<%= name %>/shared/config",
+    "/var/www/<%= name %>/shared/log",
+    "/var/www/<%= name %>/shared/pids",
+    "/var/www/<%= name %>/shared/system",
+    "/var/www/<%= name %>/shared/tmp",
+    "/var/www/<%= name %>/shared/tmp/sessions",
+    "/var/www/<%= name %>/shared/tmp/sockets",
+    "/var/www/<%= name %>/shared/tmp/assets"
   ]
 
   file { $cap_dirs:
@@ -48,22 +48,9 @@ class <%= name %>::install_nginx {
 
   file { '/var/www/<%= name %>/shared/config/database.yml':
     ensure => present,
-    source => '/vagrant/config/database.yml.skel',
+    source => '/vagrant/config/database.yml.dist',
     replace => false,
     require => File[$cap_dirs]
   }
 
-  file { '/var/www/<%= name %>/shared/config/newrelic.yml':
-    ensure => present,
-    source => '/vagrant/config/newrelic.yml.skel',
-    replace => false,
-    require => File[$cap_dirs]
-  }
-
-  file { '/var/www/<%= name %>/shared/config/application.yml':
-    ensure => present,
-    source => '/vagrant/config/application.yml.dist',
-    replace => false,
-    require => File[$cap_dirs]
-  }
 }

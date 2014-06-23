@@ -10,6 +10,7 @@ module Geppetto
 
         if @builder.tmux
           @builder.add_named_template('manifests/install_tmux.pp')
+          @builder.add_named_template('files/tmux.conf')
         end
 
         if @builder.vim
