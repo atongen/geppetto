@@ -8,9 +8,18 @@ module Geppetto
           @builder.add_template("puppet/modules/name/files/name.conf", "puppet/modules/#{@builder.name}/#{@builder.name}.conf")
         end
 
+        if @builder.tmux
+          @builder.add_named_template('manifests/install_tmux.pp')
+        end
+
+        if @builder.vim
+          @builder.add_named_template('manifests/install_vim.pp')
+        end
+
         if @builder.wkhtmltopdf
           @builder.add_named_template('files/xvfb_wkhtmltopdf.sh')
         end
+
       end
 
     end
