@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container-fluid">
+  <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="<%= base_url %>">Geppetto</a>
     </div>
@@ -26,9 +26,9 @@
     </div>
   </div>
 </div>
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="main">
       <% %w{ primary success info warning danger }.each do |level| %>
         <% if flash[level.to_sym].present? %>
           <div class="alert alert-<%= level %> alert-dismissable">
