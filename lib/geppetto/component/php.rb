@@ -6,7 +6,6 @@ module Geppetto
         return if @builder.php_version.empty?
 
         @builder.add_dependency('example42/php')
-        @builder.add_dependency('puppetlabs/apache')
 
         if @builder.php_composer
           @builder.add_dependency('tPl0ch/composer', '1.3.1')

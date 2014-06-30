@@ -1,9 +1,6 @@
 class <%= name %>::install_php {
-  class { 'apache':
-    mpm_module => 'prefork'
-  }
   class { 'php':
-    require => Class['apache']
+    service_autorestart => false
   }
 
   #TODO: Allow optional installation
