@@ -124,6 +124,7 @@ DEPENDENCIES
   activesupport
   bootstrap-sass
   compass
+  dotenv
   foreman
   i18n
   opal

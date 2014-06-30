@@ -19,6 +19,7 @@ gem 'activesupport'
 gem 'activemodel'
 gem 'i18n'
 gem 'rubyzip', '>= 1.0.0'
+gem 'dotenv'
 
 group :development, :test do
   gem 'thin'
