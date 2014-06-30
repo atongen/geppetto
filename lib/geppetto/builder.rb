@@ -109,6 +109,7 @@ module Geppetto
 
           Component::Main.new(self).process!
           Component::Ruby.new(self).process!
+          Component::Java.new(self).process!
           Component::RubyApp.new(self).process!
           Component::Postgres.new(self).process!
           Component::Mysql.new(self).process!

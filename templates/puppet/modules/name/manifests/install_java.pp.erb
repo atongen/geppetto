@@ -4,17 +4,18 @@ class <%= name %>::install_java {
 
   <% if java_type == 'oracle' %>
   include apt
+  apt::ppa { 'ppa:webupd8team/java': }
 
   # remove all openjdks
-  each( [6,7,8] ) |$v| {
-    package { ["openjdk-${v}-jdk", "openjdk-${v}-jre"]:
-      ensure => 'purged',
-    }
+  package { ["openjdk-6-jdk", "openjdk-6-jre",
+             "openjdk-7-jdk", "openjdk-7-jre",
+             "openjdk-8-jdk", "openjdk-8-jre"]:
+    ensure => 'purged',
   }
 
   file { "/tmp/java.preseed":
     ensure => present,
-    source => "vagrant/puppet/modules/<%= name %>/files/java.preseed",
+    source => "/vagrant/puppet/modules/<%= name %>/files/java.preseed",
     mode   => '0600',
     backup => false,
   }
