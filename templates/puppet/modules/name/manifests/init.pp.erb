@@ -103,6 +103,9 @@ class <%= name %> {
   <% if java_type && java_version %>
   include install_java
   <% end %>
+  <% unless php_version.empty? %>
+  include install_php
+  <% end %>
   <% if nginx %>
   include install_nginx
   <% end %>
