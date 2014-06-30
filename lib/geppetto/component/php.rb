@@ -8,7 +8,7 @@ module Geppetto
         @builder.add_dependency('example42/php')
 
         if @builder.php_composer
-          @builder.add_dependency('tPl0ch/composer', '1.2.1')
+          @builder.add_dependency('tPl0ch/composer', '1.3.1')
           @builder.add_named_template('files/composer.sh')
         end
 
