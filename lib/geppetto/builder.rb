@@ -17,7 +17,8 @@ module Geppetto
       database_version
       java_type
       java_version
-      php
+      php_version
+      php_composer
       aws
       ruby_app
       nginx
@@ -50,6 +51,10 @@ module Geppetto
     validates :java_version,
       inclusion: %w{ 6 7 8 },
       if: proc { |b| b.java_type.present? }
+
+    validates :php_version,
+      inclusion: %w{ 5.5 },
+      allow_blank: true
 
     # Database
     validates :database_type,
@@ -104,6 +109,10 @@ module Geppetto
 
     def add_dependency(dependency, version=nil, options={})
       @dependencies << Geppetto::Dependency.new(dependency, version, options)
+    end
+
+    def puppet_dependencies
+      self.dependencies.map(&:to_s).join('\n')
     end
 
     private

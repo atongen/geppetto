@@ -1,0 +1,13 @@
+class <%= name %>::install_php {
+  class { 'php': }
+
+  #install composer
+  <% if php_composer %>
+  include composer
+
+  file { '/etc/profile.d/composer.sh':
+    ensure => present,
+    source => '/vagrant/puppet/modules/<%= name %>/files/composer.sh',
+  }
+  <% end %>
+}

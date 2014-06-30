@@ -3,8 +3,16 @@ module Geppetto
     class Php < Base
 
       def process!
-        if @builder.php
-          @builder.add_dependency('example42/php', '0.0.1', git: 'banana', file: 'foobar')
+        return unless @builder.php_version
+
+        @builder.add_dependency('example42/php')
+
+        if @builder.php_composer
+          @builder.add_dependency('tPl0ch/composer', '1.2.1')
+        end
+
+        %w{ manifests/install_php.pp }.each do |file|
+          @builder.add_named_template(file)
         end
       end
     end

@@ -70,16 +70,31 @@
     <div class="panel-body selection-parent">
       <div class="radio">
         <label>
-          <input type="radio" name="virt[php]" id="virt-php-none" value="" <%= "checked" if @builder.php.blank? %>>
+          <input type="radio" name="virt[php_version]" id="virt-php-version-none" value="" <%= "checked" if @builder.php_version.blank? %>>
           None
         </label>
       </div>
 
       <div class="radio">
         <label>
-          <input type="radio" name="virt[php]" id="virt-php" value="1" <%= "checked" if @builder.php %>>
-          (version)
+          <input type="radio" name="virt[php_version]" id="virt-php-version" value="5.5" <%= "checked" if @builder.php_version %>>
+          5.5
         </label>
+      </div>
+
+      <div class="php-extras-options panel panel-default">
+        <div class="panel-heading">Extras</div>
+        <div class="panel-body">
+          <% {
+               php_composer: 'Composer',
+             }.each do |name, title| %>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="virt[<%= name %>]" id="virt-php-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
+              </label>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

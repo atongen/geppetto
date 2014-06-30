@@ -5,6 +5,4 @@ mod "jfryman/nginx",
   :git => "https://github.com/jfryman/puppet-nginx.git"
 mod "saz/timezone",
   :git => "https://github.com/saz/puppet-timezone"
-<% @dependencies.each do |dependency| %>
-<%= dependency %>
-<% end %>
+<%= puppet_dependencies %>
