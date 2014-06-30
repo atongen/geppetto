@@ -7,6 +7,8 @@ module Geppetto
           %w{ manifests/install_postgresql.pp }.each do |file|
             @builder.add_named_template(file)
           end
+
+          @builder.add_dependency('puppetlabs/postgresql')
         end
       end
 
