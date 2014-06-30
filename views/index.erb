@@ -65,6 +65,25 @@
     </div>
   </div>
 
+  <div class="database-type-options panel panel-default">
+    <div class="panel-heading">PHP</div>
+    <div class="panel-body selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[php]" id="virt-php-none" value="" <%= "checked" if @builder.php.blank? %>>
+          None
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[php]" id="virt-php" value="1" <%= "checked" if @builder.php %>>
+          (version)
+        </label>
+      </div>
+    </div>
+  </div>
+
   <div class="ruby-type-options panel panel-default">
     <div class="panel-heading">Ruby</div>
     <div class="panel-body selection-parent">

@@ -17,6 +17,7 @@ module Geppetto
       database_version
       java_type
       java_version
+      php
       aws
       ruby_app
       nginx
@@ -59,6 +60,7 @@ module Geppetto
       @params = params
       @zip = Zipper.new
       @built = false
+      @dependencies = []
       @binding = binding
       @mutex = Mutex.new
     end
@@ -100,6 +102,10 @@ module Geppetto
       @zip.add_directory(dir)
     end
 
+    def add_dependency(dependency, version=nil, options={})
+      @dependencies << Geppetto::Dependency.new(dependency, version, options)
+    end
+
     private
 
     def do_build
@@ -107,14 +113,15 @@ module Geppetto
         if !@built
           @built = true
 
-          Component::Main.new(self).process!
           Component::Ruby.new(self).process!
           Component::Java.new(self).process!
           Component::RubyApp.new(self).process!
           Component::Postgres.new(self).process!
+          Component::Php.new(self).process!
           Component::Mysql.new(self).process!
-          Component::Extras.new(self).process!
 
+          Component::Extras.new(self).process!
+          Component::Main.new(self).process!
         end
       end
     end
