@@ -21,9 +21,9 @@ gem 'i18n'
 gem 'rubyzip', '>= 1.0.0'
 gem 'dotenv'
 gem 'newrelic_rpm'
+gem 'thin'
 
 group :development, :test do
-  gem 'thin'
   gem 'foreman'
   gem 'rake'
   gem 'rspec'
