@@ -39,6 +39,7 @@ GEM
     json (1.8.1)
     minitest (5.3.4)
     multi_json (1.10.1)
+    newrelic_rpm (3.7.0.177)
     opal (0.6.2)
       source_map
       sprockets
@@ -127,6 +128,7 @@ DEPENDENCIES
   dotenv
   foreman
   i18n
+  newrelic_rpm
   opal
   opal-activesupport
   opal-jquery

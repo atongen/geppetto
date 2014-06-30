@@ -20,6 +20,7 @@ gem 'activemodel'
 gem 'i18n'
 gem 'rubyzip', '>= 1.0.0'
 gem 'dotenv'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'thin'
