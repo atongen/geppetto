@@ -112,7 +112,7 @@ module Geppetto
     end
 
     def puppet_dependencies
-      self.dependencies.map(&:to_s).join('\n')
+      @dependencies.map(&:to_s).join("\n")
     end
 
     private

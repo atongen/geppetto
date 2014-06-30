@@ -67,22 +67,24 @@
 
   <div class="database-type-options panel panel-default">
     <div class="panel-heading">PHP</div>
-    <div class="panel-body selection-parent">
-      <div class="radio">
-        <label>
-          <input type="radio" name="virt[php_version]" id="virt-php-version-none" value="" <%= "checked" if @builder.php_version.blank? %>>
-          None
-        </label>
+    <div class="panel-body">
+      <div class="selection-parent">
+        <div class="radio">
+          <label>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-none" value="" <%= "checked" if @builder.php_version.blank? %>>
+            None
+          </label>
+        </div>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-5.5" value="5.5" <%= "checked" if @builder.php_version %>>
+            5.5
+          </label>
+        </div>
       </div>
 
-      <div class="radio">
-        <label>
-          <input type="radio" name="virt[php_version]" id="virt-php-version" value="5.5" <%= "checked" if @builder.php_version %>>
-          5.5
-        </label>
-      </div>
-
-      <div class="php-extras-options panel panel-default">
+      <div class="php-extras-options panel panel-default" id="php-extras-options">
         <div class="panel-heading">Extras</div>
         <div class="panel-body">
           <% {
@@ -235,5 +237,5 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-default">Submit</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>

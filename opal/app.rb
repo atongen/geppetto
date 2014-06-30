@@ -25,11 +25,11 @@ class MyForm
       jruby_versions.hide
     end
 
+    php_extras.toggle(php_version != '')
 
     if java_type != ""
       java_versions.show
     else
-
       java_versions.hide
     end
   end
@@ -40,6 +40,18 @@ class MyForm
 
   def jruby_type
     @jruby_type ||= Element.find('#virt-ruby-type-jruby')
+  end
+
+  def php_version
+    php_versions.filter(':checked').value
+  end
+
+  def php_versions
+    @php_versions ||= Element.find('input[name=virt\[php_version\]]')
+  end
+
+  def php_extras
+    @php_extras ||= Element.find('#php-extras-options')
   end
 
   def java_type
