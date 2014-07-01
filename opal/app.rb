@@ -13,27 +13,17 @@ class MyForm
   end
 
   def update
-    if ruby_type.checked?
-      ruby_versions.show
-    else
-      ruby_versions.hide
-    end
-
-    if jruby_type.checked?
-      jruby_versions.show
-    else
-      jruby_versions.hide
-    end
-
-    php_extras.toggle(php_version != '')
-
-    if java_type != ""
-      java_versions.show
-    else
-      java_versions.hide
-    end
+    toggle_child(ruby_versions, ruby_type.checked?)
+    toggle_child(jruby_versions, jruby_type.checked?)
+    toggle_child(php_extras, php_version != '')
+    toggle_child(java_versions, java_type != '')
   end
-
+  
+  def toggle_child(child, criteria)
+    #TODO: Disable/enable fields in child sections
+    child.toggle(criteria)
+  end
+  
   def ruby_type
     @ruby_type ||= Element.find('#virt-ruby-type-ruby')
   end
