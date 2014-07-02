@@ -1,12 +1,19 @@
 class <%= name %>::install_php {
   class { 'apache':
-    mpm_module => 'prefork'
+    mpm_module => 'prefork',
+    default_vhost => false
   }
 
   #allow Order Allow,Deny format in configs, php5 specifically
   #this is added by default in the apache module in git, but not yet
   #in latest release
   apache::mod { 'access_compat': }
+
+  apache::vhost { '<%= name %>.dev':
+    default_vhost => true,
+    port    => '80',
+    docroot => '/vagrant/web',
+  }
 
   class { 'php':
     require => Class['apache']
