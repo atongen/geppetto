@@ -1,0 +1,118 @@
+class { "<%= name %>::packages": require => Stage["main"] }
+class { "<%= name %>::install_postgresql": require => Class["<%= name %>::packages"] }
+class { "<%= name %>::install_ruby": require => Class["<%= name %>::install_postgres"] }
+class { "<%= name %>::install_app": require => Class["<%= name %>::install_ruby"] }
+class { "<%= name %>::install_nginx": require => Class["<%= name %>::install_app"] }
+
+class <%= name %> {
+  Exec {
+    path => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin']
+  }
+
+  group { 'puppet':
+    ensure => present,
+  }
+
+  group { 'vagrant':
+    ensure => present
+  }
+
+  user { 'vagrant':
+    ensure => present,
+    home => '/home/vagrant',
+    gid => 'vagrant',
+    shell => '/bin/bash',
+    require => Group['vagrant']
+  }
+
+  file { '/home/vagrant':
+    ensure => directory,
+    owner => 'vagrant',
+    group => 'vagrant',
+    mode => 0750,
+    require => User['vagrant']
+  }
+
+  group { '<%= name %>':
+    ensure => present
+  }
+
+  user { '<%= name %>':
+    ensure => present,
+    home => '/home/<%= name %>',
+    gid => '<%= name %>',
+    shell => '/bin/bash',
+    require => Group['<%= name %>']
+  }
+
+  file { '/home/<%= name %>':
+    ensure => directory,
+    owner => '<%= name %>',
+    group => '<%= name %>',
+    mode => 0750,
+    require => User['<%= name %>']
+  }
+
+  file { '/home/vagrant/bin':
+    ensure => directory,
+    require => File['/home/vagrant']
+  }
+
+  group { 'nerdery':
+    ensure => present
+  }
+
+  user { 'nerdery':
+    ensure => present,
+    home => '/home/nerdery',
+    gid => 'nerdery',
+    shell => '/bin/bash',
+    groups => ['sudo'],
+    require => Group['nerdery']
+  }
+
+  file { '/home/nerdery':
+    ensure => directory,
+    owner => 'nerdery',
+    group => 'nerdery',
+    mode => 0750,
+    require => User['nerdery']
+  }
+
+  exec { 'update-locale':
+    command => 'update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8',
+  }
+
+  class { 'timezone':
+    timezone => 'America/Chicago',
+  }
+
+  include packages
+  <% if database_type == 'postgresql' %>
+  include install_postgresql
+  <% end %>
+  <% if database_type == 'mysql' %>
+  include install_mysql
+  <% end %>
+  <% if ruby_type && ruby_version %>
+  include install_ruby
+  <% end %>
+  <% if ruby_app %>
+  include install_app
+  <% end %>
+  <% if java_type && java_version %>
+  include install_java
+  <% end %>
+  <% unless php_version.empty? %>
+  include install_php
+  <% end %>
+  <% if nginx %>
+  include install_nginx
+  <% end %>
+  <% if tmux %>
+  include install_tmux
+  <% end %>
+  <% if vim %>
+  include install_vim
+  <% end %>
+}

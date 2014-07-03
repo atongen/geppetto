@@ -1,7 +1,8 @@
-require File.expand_path('../ruby_virt_app', __FILE__)
+require File.expand_path('../config/environment', __FILE__)
+require File.expand_path('../geppetto_app', __FILE__)
 require 'sinatra/asset_pipeline/task'
 
-Sinatra::AssetPipeline::Task.define! RubyVirtApp
+Sinatra::AssetPipeline::Task.define! GeppettoApp
 
 namespace :assets do
   desc 'compile opal'

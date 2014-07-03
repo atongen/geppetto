@@ -1,0 +1,15 @@
+server {
+  listen                *:80;
+
+  server_name           _;
+
+  access_log            /var/log/nginx/<%= name %>.access.log;
+  error_log             /var/log/nginx/<%= name %>.error.log;
+
+  root  /var/www/<%= name %>/current/public;
+
+  <% if ruby_type && ruby_version %>
+  passenger_enabled on;
+  passenger_ruby /opt/rubies/<%= ruby_type %>-<%= ruby_version %>/bin/ruby;
+  <% end %>
+}

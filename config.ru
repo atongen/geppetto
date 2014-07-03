@@ -1,12 +1,9 @@
-require File.expand_path('../ruby_virt_app', __FILE__)
-
-use Rack::Session::Cookie, key: 'ruby_virt.session',
-  expire_after: 31536000, # one year
-  secret: ENV['SESSION_SECRET']
+require File.expand_path('../config/environment', __FILE__)
+require GeppettoRoot.join('geppetto_app')
 
 apps = []
 
-apps << RubyVirtApp.new
+apps << GeppettoApp.new
 
 apps << Opal::Server.new do |s|
   s.main = 'application'

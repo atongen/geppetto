@@ -1,0 +1,64 @@
+class <%= name %>::install_php {
+  class { 'apache':
+    mpm_module => 'prefork',
+    default_vhost => false
+  }
+
+  #allow Order Allow,Deny format in configs, php5 specifically
+  #this is added by default in the apache module in git, but not yet
+  #in latest release
+  apache::mod { 'access_compat': }
+
+  apache::vhost { '<%= name %>.dev':
+    default_vhost => true,
+    port    => '80',
+    docroot => '/vagrant/web',
+  }
+
+  class { 'php':
+    require => Class['apache']
+  }
+
+  #TODO: Allow optional installation
+  php::module { "dev": }
+  php::module { "gd": }
+  php::module { "tidy": }
+  php::module { "curl": }
+  php::module { "ldap": }
+  php::module { "sqlite": }
+  php::module { "xsl": }
+  php::module { "intl": }
+  php::module { "mcrypt": }
+  php::module { "imagick": }
+  php::module { "memcache": }
+  php::module { "xdebug": }
+  php::module { "apc":
+    module_prefix => 'php-'
+  }
+  php::module { "pear":
+    module_prefix => 'php-'
+  }
+
+  #install composer
+  <% if php_composer %>
+  class{ 'composer':
+    target_dir      => '/usr/local/bin',
+    composer_file   => 'composer', # could also be 'composer.phar'
+    download_method => 'curl',     # or 'wget'
+    logoutput       => false,
+    tmp_path        => '/tmp',
+    php_package     => 'php5-cli',
+    curl_package    => 'curl',
+    wget_package    => 'wget',
+    composer_home   => '/root',
+    php_bin         => 'php', # could also i.e. be 'php -d "apc.enable_cli=0"' for more fine grained control
+    suhosin_enabled => false,
+    auto_update     => false, # Set to true to automatically update composer to the latest version
+  }
+
+  file { '/etc/profile.d/composer.sh':
+    ensure => present,
+    source => '/vagrant/puppet/modules/<%= name %>/files/composer.sh',
+  }
+  <% end %>
+}

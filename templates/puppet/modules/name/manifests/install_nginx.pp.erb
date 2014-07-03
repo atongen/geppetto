@@ -1,0 +1,56 @@
+class <%= name %>::install_nginx {
+
+  class { 'nginx':
+    package_source  => 'passenger',
+    http_cfg_append => {
+      'passenger_root' => '/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini',
+    }
+  }
+
+  # required for nginx/passenger
+  package { 'nginx-extras':
+    ensure => installed
+  }
+
+  # The nginx vhost will put the root directive inside of a location directive.
+  # This needs to be manually fixed before passenger will work correctly.
+  # https://github.com/jfryman/puppet-nginx/issues/142
+  nginx::resource::vhost { '<%= name %>':
+    server_name => ['_'],
+    www_root => '/var/www/<%= name %>/current/public',
+    vhost_cfg_append => {
+      'passenger_enabled' => 'on',
+      'passenger_ruby'    => '/opt/rubies/<%= ruby_type %>-<%= ruby_version %>/bin/ruby',
+    },
+    require => Package['nginx-extras']
+  }
+
+  $cap_dirs = [
+    "/var",
+    "/var/www",
+    "/var/www/<%= name %>",
+    "/var/www/<%= name %>/releases",
+    "/var/www/<%= name %>/shared",
+    "/var/www/<%= name %>/shared/config",
+    "/var/www/<%= name %>/shared/log",
+    "/var/www/<%= name %>/shared/pids",
+    "/var/www/<%= name %>/shared/system",
+    "/var/www/<%= name %>/shared/tmp",
+    "/var/www/<%= name %>/shared/tmp/sessions",
+    "/var/www/<%= name %>/shared/tmp/sockets",
+    "/var/www/<%= name %>/shared/tmp/assets"
+  ]
+
+  file { $cap_dirs:
+    ensure => directory,
+    owner => 'vagrant'
+  }
+
+  file { '/var/www/<%= name %>/shared/config/database.yml':
+    ensure => present,
+    source => '/vagrant/config/database.yml.dist',
+    replace => false,
+    require => File[$cap_dirs]
+  }
+
+}

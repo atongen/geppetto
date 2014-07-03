@@ -1,0 +1,42 @@
+# http://myshittycode.com/2014/03/02/puppet-installing-multiple-java-versions-on-single-node/
+class <%= name %>::install_java {
+  $version = <%= java_version %>
+
+  <% if java_type == 'oracle' %>
+  include apt
+  apt::ppa { 'ppa:webupd8team/java': }
+
+  # remove all openjdks
+  package { ["openjdk-6-jdk", "openjdk-6-jre",
+             "openjdk-7-jdk", "openjdk-7-jre",
+             "openjdk-8-jdk", "openjdk-8-jre"]:
+    ensure => 'purged',
+  }
+
+  file { "/tmp/java.preseed":
+    ensure => present,
+    source => "/vagrant/puppet/modules/<%= name %>/files/java.preseed",
+    mode   => '0600',
+    backup => false,
+  }
+
+  package { "oracle-java${version}-installer":
+    responsefile => "/tmp/java.preseed",
+    require      => [
+      Apt::Ppa['ppa:webupd8team/java'],
+      File["/tmp/java.preseed"]
+    ],
+  }
+
+  exec{ "update-java-alternatives -s java-${version}-oracle":
+    path    => ["/usr/bin", "/usr/sbin"],
+    require => Package["oracle-java${version}-installer"],
+  }
+  <% end %>
+
+  <% if java_type == 'openjdk' %>
+  package { ["openjdk-${version}-jdk", "openjdk-${version}-jre"]:
+    ensure => present,
+  }
+  <% end %>
+}

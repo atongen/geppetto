@@ -1,0 +1,28 @@
+# TODO: test this!
+class <%= name %>::install_mysql {
+  $databases = {
+    '<%= name %>_dev' => {
+      ensure  => 'present',
+      charset => 'utf8',
+    },
+    '<%= name %>_test' => {
+      ensure  => 'present',
+      charset => 'utf8',
+    },
+    '<%= name %>_prod' => {
+      ensure  => 'present',
+      charset => 'utf8',
+    }
+  }
+
+  # vagrant abcd1234
+  $users = {
+    'vagrant@localhost' => {
+      ensure => 'present'
+    }
+  }
+
+  class { '::mysql::server': }
+  class { '::mysql::client': }
+
+}

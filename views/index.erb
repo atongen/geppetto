@@ -1,20 +1,241 @@
-<h1 class="page-header">Ruby Virtualization</h1>
+<h1 class="page-header">Geppetto</h1>
 
-<form role="form" class=".form-horizontal" action="/" method="post">
-  <h3>Format</h3>
-  <div class="form-group">
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[format]" id="virt-format-vagrant" value="vagrant" checked>
-        Vagrant
-      </label>
+<% if @error %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Error!
+      </h3>
     </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="virt[format]" id="virt-format-docker" value="docker" disabled>
-        Docker
-      </label>
+    <div class="panel-body">
+      <%= @error %>
     </div>
   </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+<% end %>
+<% if @builder && @builder.errors.any? %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <%= pluralize(@builder.errors.count, "error") %> prohibited this wooden boy from turning real:
+      </h3>
+    </div>
+    <div class="panel-body">
+      <ul>
+      <% @builder.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<form role="form" action="/" method="post">
+  <div class="panel panel-default">
+    <div class="panel-heading">Settings</div>
+    <div class="panel-body">
+      <label for="project_name">Name</label>
+      <input type="text" id="project_name" name="virt[name]" class="form-control" placeholder="my_amazing_project" value="<%= @builder.name %>">
+      <p class="help-block">Singular, snake_case</p>
+    </div>
+  </div>
+
+  <div class="database-type-options panel panel-default">
+    <div class="panel-heading">Database</div>
+    <div class="panel-body selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-none" value="" <%= "checked" if @builder.database_type.blank? %>>
+          None
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-postgresql" value="postgresql" <%= "checked" if @builder.database_type == "postgresql" %>>
+          Postgresql
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-mysql" value="postgres" <%= "checked" if @builder.database_type == "mysql" %>>
+          Mysql
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="ruby-type-options panel panel-default">
+    <div class="panel-heading">Ruby</div>
+    <div class="panel-body selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-none" value="" <%= "checked" if @builder.ruby_type.blank? %>>
+          None
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-ruby" value="ruby" <%= "checked" if @builder.ruby_type == "ruby" %>>
+          Ruby (MRI)
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[ruby_type]" id="virt-ruby-type-jruby" value="jruby" <%= "checked" if @builder.ruby_type == "jruby" %>>
+          JRuby
+        </label>
+      </div>
+
+      <div class="ruby-version-options panel panel-default">
+        <div class="panel-heading">Ruby Version</div>
+        <div class="panel-body">
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-2-1-2" value="2.1.2" <%= "checked" if @builder.ruby_version == "2.1.2" %>>
+              2.1.2
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-9-3" value="1-9-3" <%= "checked" if @builder.ruby_version == "1.9.3" %>>
+              1.9.3
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-8-7" value="1-8-7" <%= "checked" if @builder.ruby_version == "1.8.7" %>>
+              1.8.7
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="jruby-version-options panel panel-default">
+        <div class="panel-heading">JRuby Version</div>
+        <div class="panel-body">
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[jruby_version]" id="virt-jruby-version-1.7.12" value="2.1.2" <%= "checked" if @builder.jruby_version == "1.7.12" %>>
+              1.7.12
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[jruby_version]" id="virt-jruby-version-1.6.8" value="1.6.8" <%= "checked" if @builder.jruby_version == "1.6.8" %>>
+              1.6.8
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="php-type-options panel panel-default">
+    <div class="panel-heading">PHP</div>
+    <div class="panel-body">
+      <div class="selection-parent">
+        <div class="radio">
+          <label>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-none" value="" <%= "checked" if @builder.php_version.blank? %>>
+            None
+          </label>
+        </div>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-5.5" value="5.5" <%= "checked" if @builder.php_version %>>
+            5.5
+          </label>
+        </div>
+      </div>
+
+      <div class="php-extras-options panel panel-default" id="php-extras-options">
+        <div class="panel-heading">Extras</div>
+        <div class="panel-body">
+          <% {
+               php_composer: 'Composer',
+             }.each do |name, title| %>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="virt[<%= name %>]" id="virt-php-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="java-type-options panel panel-default">
+    <div class="panel-heading">Java</div>
+    <div class="panel-body selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_type]" id="virt-java-type-none" value="" <%= 'checked' if @builder.java_type.blank? %>/>
+          None
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_type]" id="virt-java-type-oracle" value="oracle" <%= "checked" if @builder.java_type == "oracle" %>>
+          Oracle
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[java_type]" id="virt-java-type-openjdk" value="openjdk" <%= "checked" if @builder.java_type == "openjdk" %>>
+          OpenJDK
+        </label>
+      </div>
+
+      <div class="java-version-options panel panel-default">
+        <div class="panel-heading">Java Version</div>
+        <div class="panel-body">
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[java_version]" id="virt-java-version-8" value="8" <%= "checked" if @builder.java_version == "8" %>>
+              8
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[java_version]" id="virt-java-version-7" value="7" <%= "checked" if @builder.java_version == "7" %>>
+              7
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="virt[java_version]" id="virt-java-version-6" value="6" <%= "checked" if @builder.java_version == "6" %>>
+              6
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="extras-options panel panel-default">
+    <div class="panel-heading">Extras</div>
+    <div class="panel-body">
+      <% { aws:         'Amazon Web Services',
+           ruby_app:    'Ruby App',
+           nginx:       'Nginx',
+           wkhtmltopdf: 'wkhtmltopdf',
+           tmux:        'tmux',
+           vim:         'Vim',
+           redis:       'Redis',
+           memcached:   'memcached',
+           nodejs:      'NodeJS'
+      }.each do |name,title| %>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="virt[<%= name %>]" id="virt-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
+        </label>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
