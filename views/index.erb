@@ -34,8 +34,8 @@
     <div class="panel-heading">Settings</div>
     <div class="panel-body">
       <label for="project_name">Name</label>
-      <input type="text" id="project_name" name="virt[name]" class="form-control" placeholder="my-amazing-project" value="<%= @builder.name %>">
-      <p class="help-block">Singular, snake-case</p>
+      <input type="text" id="project_name" name="virt[name]" class="form-control" placeholder="my_amazing_project" value="<%= @builder.name %>">
+      <p class="help-block">Singular, snake_case</p>
     </div>
   </div>
 
@@ -61,42 +61,6 @@
           <input type="radio" name="virt[database_type]" id="virt-database-type-mysql" value="postgres" <%= "checked" if @builder.database_type == "mysql" %>>
           Mysql
         </label>
-      </div>
-    </div>
-  </div>
-
-  <div class="database-type-options panel panel-default">
-    <div class="panel-heading">PHP</div>
-    <div class="panel-body">
-      <div class="selection-parent">
-        <div class="radio">
-          <label>
-            <input type="radio" name="virt[php_version]" id="virt-php-version-none" value="" <%= "checked" if @builder.php_version.blank? %>>
-            None
-          </label>
-        </div>
-
-        <div class="radio">
-          <label>
-            <input type="radio" name="virt[php_version]" id="virt-php-version-5.5" value="5.5" <%= "checked" if @builder.php_version %>>
-            5.5
-          </label>
-        </div>
-      </div>
-
-      <div class="php-extras-options panel panel-default" id="php-extras-options">
-        <div class="panel-heading">Extras</div>
-        <div class="panel-body">
-          <% {
-               php_composer: 'Composer',
-             }.each do |name, title| %>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="virt[<%= name %>]" id="virt-php-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
-              </label>
-            </div>
-          <% end %>
-        </div>
       </div>
     </div>
   </div>
@@ -162,6 +126,42 @@
               1.6.8
             </label>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="php-type-options panel panel-default">
+    <div class="panel-heading">PHP</div>
+    <div class="panel-body">
+      <div class="selection-parent">
+        <div class="radio">
+          <label>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-none" value="" <%= "checked" if @builder.php_version.blank? %>>
+            None
+          </label>
+        </div>
+
+        <div class="radio">
+          <label>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-5.5" value="5.5" <%= "checked" if @builder.php_version %>>
+            5.5
+          </label>
+        </div>
+      </div>
+
+      <div class="php-extras-options panel panel-default" id="php-extras-options">
+        <div class="panel-heading">Extras</div>
+        <div class="panel-body">
+          <% {
+               php_composer: 'Composer',
+             }.each do |name, title| %>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="virt[<%= name %>]" id="virt-php-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
+              </label>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
