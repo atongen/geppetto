@@ -11,6 +11,10 @@ class site::packages {
   
 
   
+  package { 'nodejs':
+    ensure => present
+  }
+  
 
   
   package { ['vim', 'vim-nox']:

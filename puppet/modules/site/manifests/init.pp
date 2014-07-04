@@ -88,6 +88,8 @@ class site {
   }
 
   include packages
-                  include tmux
-      include vim
-  }
+  include ruby
+  include tmux
+  include vim
+  include app
+}
