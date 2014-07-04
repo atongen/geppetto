@@ -1,6 +1,6 @@
-class <%= name %>::install_ruby {
+class site::ruby {
 
-  # <%= name %>::install_nginx depends on this ruby/version combination
+  # site::nginx depends on this ruby/version combination
   $ruby_type = "<%= ruby_type %>"
   $ruby_version = "<%= ruby_version %>"
 
@@ -42,7 +42,7 @@ class <%= name %>::install_ruby {
 
   file { '/etc/profile.d/chruby.sh':
     ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/chruby.sh',
+    source => '/vagrant/puppet/modules/site/files/chruby.sh',
     require => Exec['install_chruby']
   }
 

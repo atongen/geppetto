@@ -1,8 +1,8 @@
-class <%= name %>::install_vim {
+class site::vim {
 
   file { '/home/vagrant/.vimrc':
     ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/vimrc',
+    source => '/vagrant/puppet/modules/site/files/vimrc',
     replace => true,
     require => File['/home/vagrant/bin']
   }

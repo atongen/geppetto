@@ -1,9 +1,9 @@
-class <%= name %>::install_app {
+class site::app {
 
   file { '/home/vagrant/bin/setup_native.sh':
     ensure => present,
     mode => 775,
-    source => '/vagrant/puppet/modules/<%= name %>/files/setup_native.sh',
+    source => '/vagrant/puppet/modules/site/files/setup_native.sh',
     replace => true,
     require => File['/home/vagrant/bin']
   }
@@ -22,13 +22,13 @@ class <%= name %>::install_app {
 
   file { '/home/vagrant/README.md':
     ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/README.md',
+    source => '/vagrant/puppet/modules/site/files/README.md',
     replace => true
   }
 
   file { '/home/vagrant/.bashrc':
     ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/bashrc',
+    source => '/vagrant/puppet/modules/site/files/bashrc',
     replace => true
   }
 }

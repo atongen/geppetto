@@ -1,4 +1,4 @@
-class <%= name %>::install_php {
+class site::php {
   class { 'apache':
     mpm_module => 'prefork',
     default_vhost => false
@@ -15,7 +15,7 @@ class <%= name %>::install_php {
     docroot => '/vagrant/web',
   }
 
-  class { 'php':
+  class { '::php':
     require => Class['apache']
   }
 
@@ -58,7 +58,7 @@ class <%= name %>::install_php {
 
   file { '/etc/profile.d/composer.sh':
     ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/composer.sh',
+    source => '/vagrant/puppet/modules/site/files/composer.sh',
   }
   <% end %>
 }

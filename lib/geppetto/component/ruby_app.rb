@@ -8,7 +8,7 @@ module Geppetto
             @builder.add_sym_template(file)
           end
 
-          %w{ manifests/install_app.pp
+          %w{ manifests/app.pp
               files/database.yml
               files/setup_native.sh }.each do |file|
             @builder.add_named_template(file)

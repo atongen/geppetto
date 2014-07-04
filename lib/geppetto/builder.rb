@@ -89,7 +89,7 @@ module Geppetto
 
     def add_template(template_name, destination_name)
       template = File.read(template_path(template_name))
-      rendered = ERB.new(template).result(@binding)
+      rendered = ERB.new(template, nil, '-').result(@binding)
       @zip.add_file(destination_name, rendered)
     end
 
@@ -100,7 +100,7 @@ module Geppetto
 
     # Convenience method for adding a template to the "name" module
     def add_named_template(file)
-      add_template("puppet/modules/name/#{file}", "puppet/modules/#{name}/#{file}")
+      add_template("puppet/modules/site/#{file}", "puppet/modules/site/#{file}")
     end
 
     def add_directory(dir)
