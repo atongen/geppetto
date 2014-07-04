@@ -1,8 +1,8 @@
 class site::ruby {
 
   # site::nginx depends on this ruby/version combination
-  $ruby_type = "<%= ruby_type %>"
-  $ruby_version = "<%= ruby_version %>"
+  $ruby_type = "ruby"
+  $ruby_version = "2.1.2"
 
   file { '/home/vagrant/src':
     ensure => 'directory'
