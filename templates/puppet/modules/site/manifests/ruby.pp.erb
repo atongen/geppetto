@@ -46,18 +46,12 @@ class site::ruby {
     require => Exec['install_chruby']
   }
 
-  file { '/home/vagrant/.ruby-version':
-    ensure => present,
-    content => "${ruby_type}-${ruby_version}",
-    require => File['/etc/profile.d/chruby.sh']
-  }
-
   # without this we have an issue with ZenTest
   # https://github.com/seattlerb/zentest/issues/29
   exec { 'update_rubygems':
     command => "chruby-exec ${ruby_type}-${ruby_version} -- gem update --system",
     cwd =>  "/home/vagrant",
-    require => File['/home/vagrant/.ruby-version']
+    require => File['/etc/profile.d/chruby.sh']
   }
 
   exec { 'install_bundler':
