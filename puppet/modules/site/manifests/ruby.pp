@@ -1,8 +1,8 @@
-class <%= name %>::install_ruby {
+class site::ruby {
 
-  # <%= name %>::install_nginx depends on this ruby/version combination
-  $ruby_type = "<%= ruby_type %>"
-  $ruby_version = "<%= ruby_version %>"
+  # site::nginx depends on this ruby/version combination
+  $ruby_type = "ruby"
+  $ruby_version = "2.1.2"
 
   file { '/home/vagrant/src':
     ensure => 'directory'
@@ -42,14 +42,8 @@ class <%= name %>::install_ruby {
 
   file { '/etc/profile.d/chruby.sh':
     ensure => present,
-    source => '/vagrant/puppet/modules/<%= name %>/files/chruby.sh',
+    source => '/vagrant/puppet/modules/site/files/chruby.sh',
     require => Exec['install_chruby']
-  }
-
-  file { '/home/vagrant/.ruby-version':
-    ensure => present,
-    content => "${ruby_type}-${ruby_version}",
-    require => File['/etc/profile.d/chruby.sh']
   }
 
   # without this we have an issue with ZenTest
@@ -57,7 +51,7 @@ class <%= name %>::install_ruby {
   exec { 'update_rubygems':
     command => "chruby-exec ${ruby_type}-${ruby_version} -- gem update --system",
     cwd =>  "/home/vagrant",
-    require => File['/home/vagrant/.ruby-version']
+    require => File['/etc/profile.d/chruby.sh']
   }
 
   exec { 'install_bundler':

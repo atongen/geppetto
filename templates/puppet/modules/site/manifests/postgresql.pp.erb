@@ -1,4 +1,4 @@
-class <%= name %>::install_postgresql {
+class site::postgresql {
   $pg_databases = ['<%= name %>_dev', '<%= name %>_test', '<%= name %>_prod']
 
   class { 'postgresql::server': }

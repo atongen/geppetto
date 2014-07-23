@@ -1,5 +1,5 @@
 # http://myshittycode.com/2014/03/02/puppet-installing-multiple-java-versions-on-single-node/
-class <%= name %>::install_java {
+class site::java {
   $version = <%= java_version %>
 
   <% if java_type == 'oracle' %>
@@ -15,7 +15,7 @@ class <%= name %>::install_java {
 
   file { "/tmp/java.preseed":
     ensure => present,
-    source => "/vagrant/puppet/modules/<%= name %>/files/java.preseed",
+    source => "/vagrant/puppet/modules/site/files/java.preseed",
     mode   => '0600',
     backup => false,
   }

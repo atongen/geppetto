@@ -28,6 +28,7 @@ module Geppetto
       redis
       memcached
       nodejs
+      git_flow
     }
 
     validates :name,
@@ -43,6 +44,20 @@ module Geppetto
     validates :ruby_version,
       inclusion: %w{ 1.7.12 1.6.8 },
       if: proc { |b| b.ruby_type == 'jruby' }
+
+    validates :ruby_app,
+      inclusion: {
+        in: [false],
+        message: "requires ruby type and ruby version."
+      },
+      if: proc { |b| b.ruby_app && !(b.ruby_type && b.ruby_version) }
+
+    validates :nginx,
+      inclusion: {
+        in: [false],
+        message: "requires ruby app."
+      },
+      if: proc { |b| b.nginx && !b.ruby_app }
 
     # Java
     validates :java_type,
@@ -89,7 +104,7 @@ module Geppetto
 
     def add_template(template_name, destination_name)
       template = File.read(template_path(template_name))
-      rendered = ERB.new(template).result(@binding)
+      rendered = ERB.new(template, nil, '-').result(@binding)
       @zip.add_file(destination_name, rendered)
     end
 
@@ -100,7 +115,7 @@ module Geppetto
 
     # Convenience method for adding a template to the "name" module
     def add_named_template(file)
-      add_template("puppet/modules/name/#{file}", "puppet/modules/#{name}/#{file}")
+      add_template("puppet/modules/site/#{file}", "puppet/modules/site/#{file}")
     end
 
     def add_directory(dir)

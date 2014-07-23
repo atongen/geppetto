@@ -1,10 +1,25 @@
-class { "<%= name %>::packages": require => Stage["main"] }
-class { "<%= name %>::install_postgresql": require => Class["<%= name %>::packages"] }
-class { "<%= name %>::install_ruby": require => Class["<%= name %>::install_postgres"] }
-class { "<%= name %>::install_app": require => Class["<%= name %>::install_ruby"] }
-class { "<%= name %>::install_nginx": require => Class["<%= name %>::install_app"] }
+class { "site::packages": require => Stage["main"] }
+<% if database_type == "postgresql" %>
+class { "site::postgresql": require => Class["site::packages"] }
+  <% if ruby_type && ruby_version %>
+  class { "site::ruby": require => Class["site::postgresql"] }
+  <% end %>
+<% elsif database_type == "mysql" %>
+class { "site::mysql": require => Class["site::packages"] }
+  <% if ruby_type && ruby_version %>
+  class { "site::ruby": require => Class["site::mysql"] }
+  <% end %>
+<% elsif ruby_type && ruby_version %>
+class { "site::ruby": require => Class["site::packages"] }
+<% end %>
+<% if ruby_app %>
+class { "site::app": require => Class["site::ruby"] }
+<% end %>
+<% if nginx %>
+class { "site::nginx": require => Class["site::app"] }
+<% end %>
 
-class <%= name %> {
+class site {
   Exec {
     path => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin']
   }
@@ -55,7 +70,9 @@ class <%= name %> {
 
   file { '/home/vagrant/bin':
     ensure => directory,
-    require => File['/home/vagrant']
+    require => File['/home/vagrant'],
+    owner => 'vagrant',
+    group => 'vagrant'
   }
 
   group { 'nerdery':
@@ -88,31 +105,31 @@ class <%= name %> {
   }
 
   include packages
-  <% if database_type == 'postgresql' %>
-  include install_postgresql
-  <% end %>
-  <% if database_type == 'mysql' %>
-  include install_mysql
-  <% end %>
-  <% if ruby_type && ruby_version %>
-  include install_ruby
-  <% end %>
-  <% if ruby_app %>
-  include install_app
-  <% end %>
-  <% if java_type && java_version %>
-  include install_java
-  <% end %>
-  <% unless php_version.empty? %>
-  include install_php
-  <% end %>
-  <% if nginx %>
-  include install_nginx
-  <% end %>
-  <% if tmux %>
-  include install_tmux
-  <% end %>
-  <% if vim %>
-  include install_vim
-  <% end %>
+  <% if database_type == 'postgresql' -%>
+  include postgresql
+  <% end -%>
+  <% if database_type == 'mysql' -%>
+  include mysql
+  <% end -%>
+  <% if ruby_type && ruby_version -%>
+  include ruby
+  <% end -%>
+  <% if ruby_app -%>
+  include app
+  <% end -%>
+  <% if java_type && java_version -%>
+  include java
+  <% end -%>
+  <% unless php_version.empty? -%>
+  include php
+  <% end -%>
+  <% if nginx -%>
+  include nginx
+  <% end -%>
+  <% if tmux -%>
+  include tmux
+  <% end -%>
+  <% if vim -%>
+  include vim
+  <% end -%>
 }

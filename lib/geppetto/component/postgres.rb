@@ -4,7 +4,7 @@ module Geppetto
 
       def process!
         if @builder.database_type == 'postgresql'
-          %w{ manifests/install_postgresql.pp }.each do |file|
+          %w{ manifests/postgresql.pp }.each do |file|
             @builder.add_named_template(file)
           end
 

@@ -1,6 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Vagrant and puppet configuration generated with geppetto version <%= Geppetto::VERSION %>.
+# Site: http://geppetto.herokuapp.com/
+# Code: https://github.com/atongen/geppetto
+
 <% if aws %>
 env_file = File.expand_path('../puppet/.env.vagrant', __FILE__)
 if File.file?(env_file)

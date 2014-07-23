@@ -1,4 +1,4 @@
-class <%= name %>::packages {
+class site::packages {
 
   package { 'build-essential':
     ensure => present
@@ -63,6 +63,12 @@ class <%= name %>::packages {
 
   <% if memcached %>
   package { 'memcached':
+    ensure => present
+  }
+  <% end %>
+
+  <% if git_flow %>
+  package { 'git-flow':
     ensure => present
   }
   <% end %>

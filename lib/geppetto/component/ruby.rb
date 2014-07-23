@@ -4,7 +4,7 @@ module Geppetto
 
       def process!
         unless @builder.ruby_type.empty?
-          %w{ manifests/install_ruby.pp
+          %w{ manifests/ruby.pp
               files/chruby.sh }.each do |file|
             @builder.add_named_template(file)
           end

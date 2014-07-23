@@ -13,7 +13,7 @@ module Geppetto
           @builder.add_named_template('files/composer.sh')
         end
 
-        %w{ manifests/install_php.pp }.each do |file|
+        %w{ manifests/php.pp }.each do |file|
           @builder.add_named_template(file)
         end
       end
