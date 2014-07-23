@@ -53,6 +53,15 @@ class site::ruby {
     require => Exec['install_chruby']
   }
 
+  file { '/home/vagrant/.gemrc':
+    ensure => present,
+    content => "---\n:verbose: true\ngem: --no-ri --no-rdoc\n",
+    replace => false,
+    owner => 'vagrant',
+    group => 'vagrant',
+    require => File['/etc/profile.d/chruby.sh']
+  }
+
   # without this we have an issue with ZenTest
   # https://github.com/seattlerb/zentest/issues/29
   exec { 'update_rubygems':
@@ -60,6 +69,7 @@ class site::ruby {
     cwd =>  "/home/vagrant",
     require => File['/etc/profile.d/chruby.sh']
   }
+
 
   exec { 'install_bundler':
     command => "chruby-exec ${ruby_type}-${ruby_version} -- gem install bundler --no-rdoc --no-ri",
