@@ -15,10 +15,17 @@ class site::app {
     group => 'vagrant'
   }
 
+  file { '/vagrant/config':
+    ensure => directory,
+    owner => 'vagrant',
+    group => 'vagrant'
+  }
+
   file { '/vagrant/config/database.yml.dist':
     ensure => present,
     source => '/vagrant/puppet/modules/site/files/database.yml',
-    replace => false
+    replace => false,
+    require => File['/vagrant/config']
   }
 
   file { '/vagrant/config/database.yml':
