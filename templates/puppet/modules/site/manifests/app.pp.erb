@@ -8,16 +8,24 @@ class site::app {
     require => File['/home/vagrant/bin']
   }
 
-
   file { '/home/vagrant/<%= name %>':
     ensure => symlink,
-    target => '/vagrant'
+    target => '/vagrant',
+    owner => 'vagrant',
+    group => 'vagrant'
+  }
+
+  file { '/vagrant/config/database.yml.dist':
+    ensure => present,
+    source => '/vagrant/puppet/modules/site/files/database.yml',
+    replace => false
   }
 
   file { '/vagrant/config/database.yml':
     ensure => present,
     source => '/vagrant/config/database.yml.dist',
-    replace => false
+    replace => false,
+    require => File['/vagrant/config/database.yml.dist']
   }
 
   file { '/home/vagrant/README.md':
@@ -31,4 +39,14 @@ class site::app {
     source => '/vagrant/puppet/modules/site/files/bashrc',
     replace => true
   }
+
+  <% if ruby_type && ruby_version %>
+  file { '/vagrant/.ruby-version':
+    ensure => present,
+    content => "<%= ruby_type %>-<%= ruby_version %>",
+    replace => false,
+    owner => 'vagrant',
+    group => 'vagrant'
+  }
+  <% end %>
 }

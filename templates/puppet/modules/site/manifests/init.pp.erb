@@ -1,8 +1,23 @@
 class { "site::packages": require => Stage["main"] }
+<% if database_type == "postgresql" %>
 class { "site::postgresql": require => Class["site::packages"] }
-class { "site::ruby": require => Class["site::postgres"] }
+  <% if ruby_type && ruby_version %>
+  class { "site::ruby": require => Class["site::postgresql"] }
+  <% end %>
+<% elsif database_type == "mysql" %>
+class { "site::mysql": require => Class["site::packages"] }
+  <% if ruby_type && ruby_version %>
+  class { "site::ruby": require => Class["site::mysql"] }
+  <% end %>
+<% elsif ruby_type && ruby_version %>
+class { "site::ruby": require => Class["site::packages"] }
+<% end %>
+<% if ruby_app %>
 class { "site::app": require => Class["site::ruby"] }
+<% end %>
+<% if nginx %>
 class { "site::nginx": require => Class["site::app"] }
+<% end %>
 
 class site {
   Exec {
@@ -55,7 +70,9 @@ class site {
 
   file { '/home/vagrant/bin':
     ensure => directory,
-    require => File['/home/vagrant']
+    require => File['/home/vagrant'],
+    owner => 'vagrant',
+    group => 'vagrant'
   }
 
   group { 'nerdery':

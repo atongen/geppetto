@@ -4,7 +4,9 @@ class site::vim {
     ensure => present,
     source => '/vagrant/puppet/modules/site/files/vimrc',
     replace => true,
-    require => File['/home/vagrant/bin']
+    require => File['/home/vagrant/bin'],
+    owner => 'vagrant',
+    group => 'vagrant'
   }
 
   $vim_dirs = [
@@ -15,7 +17,9 @@ class site::vim {
 
   file { $vim_dirs:
     ensure => directory,
-    require => File['/home/vagrant']
+    require => File['/home/vagrant'],
+    owner => 'vagrant',
+    group => 'vagrant'
   }
 
 }

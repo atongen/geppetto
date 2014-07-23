@@ -28,6 +28,7 @@ module Geppetto
       redis
       memcached
       nodejs
+      git_flow
     }
 
     validates :name,
@@ -43,6 +44,20 @@ module Geppetto
     validates :ruby_version,
       inclusion: %w{ 1.7.12 1.6.8 },
       if: proc { |b| b.ruby_type == 'jruby' }
+
+    validates :ruby_app,
+      inclusion: {
+        in: [false],
+        message: "requires ruby type and ruby version."
+      },
+      if: proc { |b| b.ruby_app && !(b.ruby_type && b.ruby_version) }
+
+    validates :nginx,
+      inclusion: {
+        in: [false],
+        message: "requires ruby app."
+      },
+      if: proc { |b| b.nginx && !b.ruby_app }
 
     # Java
     validates :java_type,

@@ -67,4 +67,10 @@ class site::packages {
   }
   <% end %>
 
+  <% if git_flow %>
+  package { 'git-flow':
+    ensure => present
+  }
+  <% end %>
+
 }
