@@ -1,7 +1,7 @@
 require 'active_support/core_ext/string'
 
 module Geppetto
-  VERSION = '0.2.1'
+  VERSION = '0.2.2'
 end
 
 require 'geppetto/helpers'

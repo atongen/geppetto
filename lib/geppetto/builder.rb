@@ -41,7 +41,7 @@ module Geppetto
     validates :ruby_version,
       inclusion: %w{ 2.1.2 1.9.3 1.8.7 },
       if: proc { |b| b.ruby_type == 'ruby' }
-    validates :ruby_version,
+    validates :jruby_version,
       inclusion: %w{ 1.7.12 1.6.8 },
       if: proc { |b| b.ruby_type == 'jruby' }
 
