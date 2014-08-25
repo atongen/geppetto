@@ -58,7 +58,7 @@
 
       <div class="radio">
         <label>
-          <input type="radio" name="virt[database_type]" id="virt-database-type-mysql" value="postgres" <%= "checked" if @builder.database_type == "mysql" %>>
+          <input type="radio" name="virt[database_type]" id="virt-database-type-mysql" value="mysql" <%= "checked" if @builder.database_type == "mysql" %>>
           Mysql
         </label>
       </div>
@@ -98,13 +98,13 @@
           </div>
           <div class="radio">
             <label>
-              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-9-3" value="1-9-3" <%= "checked" if @builder.ruby_version == "1.9.3" %>>
+              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-9-3" value="1.9.3" <%= "checked" if @builder.ruby_version == "1.9.3" %>>
               1.9.3
             </label>
           </div>
           <div class="radio">
             <label>
-              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-8-7" value="1-8-7" <%= "checked" if @builder.ruby_version == "1.8.7" %>>
+              <input type="radio" name="virt[ruby_version]" id="virt-ruby-version-1-8-7" value="1.8.7" <%= "checked" if @builder.ruby_version == "1.8.7" %>>
               1.8.7
             </label>
           </div>
@@ -144,7 +144,7 @@
 
         <div class="radio">
           <label>
-            <input type="radio" name="virt[php_version]" id="virt-php-version-5.5" value="5.5" <%= "checked" if @builder.php_version %>>
+            <input type="radio" name="virt[php_version]" id="virt-php-version-5.5" value="5.5" <%= "checked" if @builder.php_version.present? %>>
             5.5
           </label>
         </div>
