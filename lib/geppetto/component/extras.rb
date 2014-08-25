@@ -6,7 +6,7 @@ module Geppetto
         if @builder.nginx
           @builder.add_named_template('manifests/nginx.pp')
           @builder.add_template("puppet/modules/site/files/name.conf", "puppet/modules/site/#{@builder.name}.conf")
-          @builder.add_dependency("jfryman/nginx", nil, git: 'https://github.com/jfryman/puppet-nginx.git')
+          @builder.add_dependency("jfryman-nginx", nil, git: 'https://github.com/jfryman/puppet-nginx.git')
         end
 
         if @builder.tmux

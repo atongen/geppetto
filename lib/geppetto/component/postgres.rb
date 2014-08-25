@@ -8,7 +8,7 @@ module Geppetto
             @builder.add_named_template(file)
           end
 
-          @builder.add_dependency('puppetlabs/postgresql')
+          @builder.add_dependency('puppetlabs-postgresql')
         end
       end
 

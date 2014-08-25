@@ -4,6 +4,7 @@ module Geppetto
 
       def process!
         %w{ Vagrantfile
+            hiera.yaml
             puppet/Puppetfile
             puppet/manifests/default.pp
             puppet/shell/main.sh }.each do |file|
@@ -18,6 +19,7 @@ module Geppetto
             files/README.md }.each do |file|
           @builder.add_named_template(file)
         end
+
 
         # Directories
         %w{ puppet/run }.each do |dir|

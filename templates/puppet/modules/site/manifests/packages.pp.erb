@@ -73,4 +73,9 @@ class site::packages {
   }
   <% end %>
 
+  <% if database_type == 'mysql' %>
+  package { 'libmysqlclient-dev':
+    ensure => present
+  }
+  <% end %>
 }
