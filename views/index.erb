@@ -215,6 +215,40 @@
     </div>
   </div>
 
+  <div class="node-type-options panel panel-default">
+    <div class="panel-heading">NodeJS (and npm)</div>
+    <div class="panel-body selection-parent">
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[nodejs]" id="virt-node-type-none" value="" <%= 'checked' if @builder.nodejs.blank? %> />
+          None
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="virt[nodejs]" id="virt-node-type-node" value="1" <%= 'checked' if @builder.nodejs.present? %> />
+          Install
+        </label>
+      </div>
+
+      <div class="node-extras-options panel panel-default" id="node-extras-options">
+        <div class="panel-heading">Extras</div>
+        <div class="panel-body">
+          <% {
+                nodejs_bower: 'Bower',
+                nodejs_grunt: 'Grunt'
+             }.each do |name, title| %>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="virt[<%= name %>]" id="virt-node-extras-<%= name %>" value="1" <%= "checked" if @builder.send(name.to_sym) == '1' %>> <%= title %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="extras-options panel panel-default">
     <div class="panel-heading">Extras</div>
     <div class="panel-body">
@@ -226,7 +260,6 @@
            vim:         'Vim',
            redis:       'Redis',
            memcached:   'memcached',
-           nodejs:      'NodeJS',
            git_flow:    'git-flow'
       }.each do |name,title| %>
       <div class="checkbox">

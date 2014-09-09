@@ -1,0 +1,45 @@
+class site::nodejs {
+  class { 'nodejs':
+    version => 'stable',
+    make_install => false,
+  }
+
+  <% if nodejs_grunt %>
+  package { 'grunt-cli':
+    provider => npm,
+    require => Class['nodejs'],
+  }
+  <% end %>
+
+  <% if nodejs_bower %>
+  package { 'bower':
+    provider => npm,
+    require => Class['nodejs'],
+  }
+  <% end %>
+
+    ## Set path to include node install directory for exec calls
+    # Exec {
+    #  path => ['/usr/local/node/node-default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin']
+    # }
+
+    ## Run npm install in /vagrant directory if any dependencies are missing
+    # exec { "npm install":
+    #  command => "npm install --no-bin-links",
+    #  user => 'vagrant',
+    #  cwd => "/vagrant",
+    #  onlyif => 'npm outdated | grep MISSING > /dev/null',
+    #  require => Class['nodejs'],
+    # }
+
+    <%- if nodejs_bower %>
+    ## Run bower install in /vagrant directory if any dependencies are missing
+    # exec { "bower install":
+    #  command => "bower install --config.interactive=false",
+    #  user => 'vagrant',
+    #  cwd => "/vagrant",
+    #  onlyif => 'bower list 2>&1 | grep ENOTFOUND > /dev/null',
+    #  require => [Package['bower'], Exec['npm install']],
+    # }
+    <% end %>
+}

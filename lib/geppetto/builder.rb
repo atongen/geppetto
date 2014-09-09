@@ -28,6 +28,8 @@ module Geppetto
       redis
       memcached
       nodejs
+      nodejs_bower
+      nodejs_grunt
       git_flow
     }
 
@@ -143,7 +145,7 @@ module Geppetto
           Component::Postgres.new(self).process!
           Component::Php.new(self).process!
           Component::Mysql.new(self).process!
-
+          Component::Nodejs.new(self).process!
           Component::Extras.new(self).process!
           Component::Main.new(self).process!
         end

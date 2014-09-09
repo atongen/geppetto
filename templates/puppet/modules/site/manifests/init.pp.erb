@@ -18,6 +18,9 @@ class { "site::app": require => Class["site::ruby"] }
 <% if nginx %>
 class { "site::nginx": require => Class["site::app"] }
 <% end %>
+<% if nodejs %>
+class { "site::nodejs": }
+<% end %>
 
 class site {
   Exec {
@@ -131,5 +134,8 @@ class site {
   <% end -%>
   <% if vim -%>
   include vim
+  <% end -%>
+  <% if nodejs -%>
+  include nodejs
   <% end -%>
 }

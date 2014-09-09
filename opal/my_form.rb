@@ -11,6 +11,7 @@ class MyForm
     toggle_child(jruby_versions, jruby_type.checked?)
     toggle_child(php_extras, php_version != '')
     toggle_child(java_versions, java_type != '')
+    toggle_child(node_extras, nodejs_type.checked?)
   end
 
   def toggle_child(child, criteria)
@@ -56,6 +57,14 @@ class MyForm
 
   def jruby_versions
     @jruby_versions ||= Element.find('.jruby-version-options')
+  end
+
+  def nodejs_type
+    @nodejs_type ||= Element.find('#virt-node-type-node')
+  end
+
+  def node_extras
+    @ruby_extras ||= Element.find('#node-extras-options')
   end
 
   def update_fields
