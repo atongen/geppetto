@@ -20,7 +20,7 @@ The app is also hosted on heroku: http://geppetto.herokuapp.com/
 2. Fill out the form with the requirements for your app
 3. Submit, collect zip file
 4. Extract zip file into your application
-5. Tweak Vagrantfile and puppet manifests to suite your needs
+5. Tweak Vagrantfile and puppet manifests to suit your needs
 6. run `vagrant up`
 
 ## Contributing
