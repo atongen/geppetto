@@ -12,7 +12,7 @@ $ bundle install
 $ foreman start
 ```
 
-The app is also hosted on heroku: https://github.com/atongen/geppetto.git
+The app is also hosted on heroku: http://geppetto.herokuapp.com/
 
 ## Usage
 
