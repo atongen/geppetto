@@ -15,6 +15,9 @@ class GeppettoApp < Sinatra::Application
     expire_after: 31536000, # one year
     secret: ENV['SESSION_SECRET']
   use Rack::Flash
+  if ENV['GA_ACCOUNT']
+    use Rack::GoogleAnalytics, :tracker => ENV['GA_ACCOUNT']
+  end
 
   helpers do
     include Sinatra::Cookies

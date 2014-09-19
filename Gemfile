@@ -22,6 +22,7 @@ gem 'rubyzip', '>= 1.0.0'
 gem 'dotenv'
 gem 'newrelic_rpm'
 gem 'thin'
+gem 'rack-google-analytics'
 
 group :development, :test do
   gem 'foreman'
